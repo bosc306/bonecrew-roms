@@ -20,7 +20,7 @@
         .banner-header {
             width: 100%;
             max-width: 950px;
-            margin: 0 auto 25px auto;
+            margin: 0 auto 20px auto;
             text-align: center;
         }
 
@@ -30,6 +30,45 @@
             display: block;
             border-radius: 10px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Konsolen-Navigation / Tabs */
+        .console-nav {
+            max-width: 950px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background-color: #0b1320;
+            border: 1px solid #1a273b;
+            color: #8fa3be;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .nav-btn:hover {
+            border-color: #ff9900;
+            color: #ffffff;
+            background-color: #101c2e;
+        }
+
+        /* Aktiver Reiter */
+        .nav-btn.active {
+            background: linear-gradient(135deg, #ff9900 0%, #cc5500 100%);
+            color: #ffffff;
+            border-color: #ff9900;
+            box-shadow: 0 0 12px rgba(255, 153, 0, 0.4);
         }
 
         .container {
@@ -125,6 +164,12 @@
 
 <div class="banner-header">
     <img src="Unbenannt.png" alt="BoneCrew Banner">
+</div>
+
+<!-- Konsolen-Navigation -->
+<div class="console-nav">
+    <a href="index.html" class="nav-btn active">Xbox 360</a>
+    <a href="xbox-classic.html" class="nav-btn">Xbox Classic</a>
 </div>
 
 <div class="container">
