@@ -58,29 +58,7 @@
             color: #6882a0;
             text-align: center;
             font-size: 0.95em;
-            margin-bottom: 20px;
-        }
-
-        /* Dezent integriertes Suchfeld */
-        .search-box {
             margin-bottom: 25px;
-        }
-
-        .search-box input {
-            width: 100%;
-            background-color: #070c14;
-            border: 1px solid #1a273b;
-            color: #fff;
-            padding: 12px 16px;
-            border-radius: 6px;
-            font-size: 0.95em;
-            outline: none;
-            transition: all 0.2s;
-        }
-
-        .search-box input:focus {
-            border-color: #ff9900;
-            box-shadow: 0 0 8px rgba(255, 153, 0, 0.2);
         }
 
         /* Liste */
@@ -153,12 +131,7 @@
     <h1>Microsoft Xbox 360 Vault</h1>
     <p class="subtitle">Direkte Archive-Downloads im BoneCrew-Design</p>
     
-    <!-- Suchfeld -->
-    <div class="search-box">
-        <input type="text" id="categorySearch" placeholder="Liste durchsuchen (z. B. A, Digital, Title Updates)..." onkeyup="filterList()">
-    </div>
-    
-    <ul id="vaultList">
+    <ul>
         <li><span class="title">Microsoft Xbox 360 - # - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_number" target="_blank">Download</a></li>
         <li><span class="title">Microsoft Xbox 360 - A (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_a_part1" target="_blank">Download</a></li>
         <li><span class="title">Microsoft Xbox 360 - A (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_a_part2" target="_blank">Download</a></li>
@@ -211,26 +184,6 @@
         Powered by BoneCrew Vault
     </div>
 </div>
-
-<script>
-    function filterList() {
-        const input = document.getElementById('categorySearch').value.toLowerCase();
-        const ul = document.getElementById('vaultList');
-        const items = ul.getElementsByTagName('li');
-
-        for (let i = 0; i < items.length; i++) {
-            const titleSpan = items[i].querySelector('.title');
-            if (titleSpan) {
-                const textValue = titleSpan.textContent || titleSpan.innerText;
-                if (textValue.toLowerCase().indexOf(input) > -1) {
-                    items[i].style.display = "";
-                } else {
-                    items[i].style.display = "none";
-                }
-            }
-        }
-    }
-</script>
 
 </body>
 </html>
