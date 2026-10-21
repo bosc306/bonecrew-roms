@@ -71,7 +71,7 @@
             background-color: #070c14;
             border: 1px solid #1a273b;
             color: #fff;
-            padding: 10px 15px;
+            padding: 12px 16px;
             border-radius: 6px;
             font-size: 0.95em;
             outline: none;
@@ -150,10 +150,10 @@
 </div>
 
 <div class="container">
-    <h1>BoNe CrEw Xbox 360 Vault</h1>
+    <h1>Microsoft Xbox 360 Vault</h1>
     <p class="subtitle">Direkte Archive-Downloads im BoneCrew-Design</p>
     
-    <!-- Dezent eingebautes Suchfeld, das die darunterliegende Liste filtert -->
+    <!-- Suchfeld -->
     <div class="search-box">
         <input type="text" id="categorySearch" placeholder="Liste durchsuchen (z. B. A, Digital, Title Updates)..." onkeyup="filterList()">
     </div>
@@ -214,19 +214,18 @@
 
 <script>
     function filterList() {
-        const input = document.getElementById('categorySearch');
-        const filter = input.value.toLowerCase();
+        const input = document.getElementById('categorySearch').value.toLowerCase();
         const ul = document.getElementById('vaultList');
-        const li = ul.getElementsByTagName('li');
+        const items = ul.getElementsByTagName('li');
 
-        for (let i = 0; i < li.length; i++) {
-            const span = li[i].getElementsByClassName('title')[0];
-            if (span) {
-                const txtValue = span.textContent || span.innerText;
-                if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                    li[i].style.display = "";
+        for (let i = 0; i < items.length; i++) {
+            const titleSpan = items[i].querySelector('.title');
+            if (titleSpan) {
+                const textValue = titleSpan.textContent || titleSpan.innerText;
+                if (textValue.toLowerCase().indexOf(input) > -1) {
+                    items[i].style.display = "";
                 } else {
-                    li[i].style.display = "none";
+                    items[i].style.display = "none";
                 }
             }
         }
