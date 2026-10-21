@@ -11,40 +11,43 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            /* Exakter Blauton der Banner-Ränder für einen fließenden Übergang */
-            background-color: #0b1320;
+            /* Genau die Farbe des blauen Streifens im Banner für den nahtlosen Übergang */
+            background-color: #0e2d53;
             color: #e0e0e0;
             margin: 0;
-            padding: 20px 0 50px 0;
+            padding: 30px 0 50px 0;
         }
 
-        /* Zentrierter Banner-Header ohne störende Ränder */
-        .banner-header {
+        /* Container für das Banner - blendet die weißen Streifen oben & unten komplett aus */
+        .banner-wrapper {
             width: 100%;
-            max-width: 950px; /* Passt sich perfekt an die Box an */
+            max-width: 950px;
+            height: 180px; /* Höhe so angepasst, dass nur das Banner-Motiv sichtbar ist */
             margin: 0 auto 30px auto;
-            text-align: center;
-            background-color: #0b1320;
+            overflow: hidden;
+            position: relative;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+            border: 1px solid #1c4b82;
         }
 
-        .banner-header img {
+        .banner-wrapper img {
             width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 8px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.8);
-            border: 1px solid #1a2638;
+            height: 100%;
+            /* 'cover' skaliert das Bild so, dass die weißen Ränder oben/unten außerhalb des Containers liegen */
+            object-fit: cover;
+            object-position: center;
         }
 
-        /* Hauptcontainer im düsteren Look */
+        /* Hauptcontainer im abgestimmten Dark-Blue Design */
         .container {
             max-width: 950px;
             margin: 0 auto;
-            background: #0e1726;
+            background: #091c35;
             padding: 30px;
             border-radius: 12px;
-            border: 1px solid #1a2638;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border: 1px solid #1c4b82;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
         }
 
         h1 {
@@ -55,12 +58,12 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             text-shadow: 0 0 12px rgba(255, 153, 0, 0.4);
-            border-bottom: 2px solid #1a2638;
+            border-bottom: 2px solid #1c4b82;
             padding-bottom: 15px;
         }
 
         p.subtitle {
-            color: #6c829e;
+            color: #79a1d1;
             text-align: center;
             font-size: 0.95em;
             margin-bottom: 25px;
@@ -75,7 +78,7 @@
 
         li {
             padding: 14px 16px;
-            border-bottom: 1px solid #142033;
+            border-bottom: 1px solid #13335b;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -84,18 +87,18 @@
         }
 
         li:hover {
-            background-color: #121d2d;
+            background-color: #0d2749;
             border-left: 4px solid #00ff66;
             padding-left: 12px;
         }
 
         .title {
             font-weight: 600;
-            color: #c9d6e8;
+            color: #d8e5f5;
             font-size: 0.95em;
         }
 
-        /* Buttons mit feurigem Orange & Leuchtgrün beim Hover */
+        /* Buttons im Orange/Grün-Look */
         a.dl-btn {
             background: linear-gradient(135deg, #ff9900 0%, #cc5500 100%);
             color: #ffffff;
@@ -120,14 +123,14 @@
         .footer {
             margin-top: 30px;
             font-size: 0.85em;
-            color: #41536b;
+            color: #557aa8;
             text-align: center;
         }
     </style>
 </head>
 <body>
 
-<div class="banner-header">
+<div class="banner-wrapper">
     <img src="BoneCrew%20im%20goldenen%20Ruinenlicht.png" alt="BoneCrew Banner">
 </div>
 
