@@ -11,38 +11,36 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            /* Hintergrundfarbe exakt an das Dunkelblau/Schwarz des Banner-Zentrums angepasst */
-            background-color: #030811;
+            /* Exakter Blauton der Banner-Ränder für einen fließenden Übergang */
+            background-color: #0b1320;
             color: #e0e0e0;
             margin: 0;
-            padding: 0 0 50px 0;
+            padding: 20px 0 50px 0;
         }
 
-        /* Banner Header - schneidet Ränder ab und passt sich nahtlos an */
+        /* Zentrierter Banner-Header ohne störende Ränder */
         .banner-header {
             width: 100%;
-            height: 220px; /* Feste Höhe, damit das Banner knackig bleibt */
-            overflow: hidden;
-            position: relative;
-            background-color: #030811;
-            border-bottom: 2px solid #ff9900;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.9);
+            max-width: 950px; /* Passt sich perfekt an die Box an */
+            margin: 0 auto 30px auto;
+            text-align: center;
+            background-color: #0b1320;
         }
 
         .banner-header img {
             width: 100%;
-            height: 100%;
-            /* Zoomt leicht hinein, um die weißen/blauen Ränder der Bilddatei auszublenden */
-            object-fit: cover;
-            object-position: center;
-            transform: scale(1.15); 
+            height: auto;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.8);
+            border: 1px solid #1a2638;
         }
 
-        /* Hauptcontainer im düsteren Gold/Grün-Look */
+        /* Hauptcontainer im düsteren Look */
         .container {
             max-width: 950px;
-            margin: 40px auto 0 auto;
-            background: #09101d;
+            margin: 0 auto;
+            background: #0e1726;
             padding: 30px;
             border-radius: 12px;
             border: 1px solid #1a2638;
@@ -77,7 +75,7 @@
 
         li {
             padding: 14px 16px;
-            border-bottom: 1px solid #131d2c;
+            border-bottom: 1px solid #142033;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -86,7 +84,7 @@
         }
 
         li:hover {
-            background-color: #0f1927;
+            background-color: #121d2d;
             border-left: 4px solid #00ff66;
             padding-left: 12px;
         }
