@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BoneCrew - Xbox Classic Vault</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #070c14;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 30px 0 50px 0;
+        }
+
+        .banner-header {
+            width: 100%;
+            max-width: 950px;
+            margin: 0 auto 20px auto;
+            text-align: center;
+        }
+
+        .banner-header img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Konsolen-Navigation */
+        .console-nav {
+            max-width: 950px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background-color: #0b1320;
+            border: 1px solid #1a273b;
+            color: #8fa3be;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .nav-btn:hover {
+            border-color: #ff9900;
+            color: #ffffff;
+            background-color: #101c2e;
+        }
+
+        /* Aktiver Reiter */
+        .nav-btn.active {
+            background: linear-gradient(135deg, #ff9900 0%, #cc5500 100%);
+            color: #ffffff;
+            border-color: #ff9900;
+            box-shadow: 0 0 12px rgba(255, 153, 0, 0.4);
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #0b1320;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #1a273b;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        h1 {
+            color: #ff9900;
+            text-align: center;
+            margin-top: 0;
+            font-size: 2em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 12px rgba(255, 153, 0, 0.4);
+            border-bottom: 2px solid #1a273b;
+            padding-bottom: 15px;
+        }
+
+        p.subtitle {
+            color: #6882a0;
+            text-align: center;
+            font-size: 0.95em;
+            margin-bottom: 25px;
+        }
+
+        /* Liste */
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            padding: 14px 16px;
+            border-bottom: 1px solid #142033;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease-in-out;
+            border-radius: 6px;
+        }
+
+        li:hover {
+            background-color: #101c2e;
+            border-left: 4px solid #00ff66;
+            padding-left: 12px;
+        }
+
+        .title {
+            font-weight: 600;
+            color: #d1dfef;
+            font-size: 0.95em;
+        }
+
+        /* Buttons im feurigen Orange mit Neongrün-Hover */
+        a.dl-btn {
+            background: linear-gradient(135deg, #ff9900 0%, #cc5500 100%);
+            color: #ffffff;
+            padding: 8px 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.85em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(255, 153, 0, 0.3);
+            transition: all 0.2s ease-in-out;
+            white-space: nowrap;
+        }
+
+        a.dl-btn:hover {
+            background: linear-gradient(135deg, #00ff66 0%, #009933 100%);
+            color: #000000;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.85em;
+            color: #4b617a;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="banner-header">
+    <img src="Unbenannt.png" alt="BoneCrew Banner">
+</div>
+
+<!-- Konsolen-Navigation -->
+<div class="console-nav">
+    <a href="index.html" class="nav-btn">Xbox 360</a>
+    <a href="xbox-classic.html" class="nav-btn active">Xbox Classic</a>
+</div>
+
+<div class="container">
+    <h1>Microsoft Xbox Classic Vault</h1>
+    <p class="subtitle">Direkte Archive-Downloads im BoneCrew-Design</p>
+    
+    <ul>
+        <li><span class="title">Microsoft Xbox - # - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_number" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - A - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_a" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - B - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_b" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - C (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_c_part1" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - C (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_c_part2" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - D - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_d" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - E - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_e" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - F - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_f" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - G - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_g" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - H - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_h" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - I - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_i" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - J - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_j" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - K - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_k" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - L - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_l" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - M (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_m_part1" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - M (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_m_part2" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - N - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_n" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - O - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_o" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - P - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_p" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - Q - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_q" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - R - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_r" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - S (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_s_part1" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - S (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_s_part2" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - T (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_t_part1" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - T (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_t_part2" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - U - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_u" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - V - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_v" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - W - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_w" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - X - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_x" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - Y - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_y" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - Z - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_z" target="_blank">Download</a></li>
+        <li><span class="title">Microsoft Xbox - Title Updates & DLC - Insignia / Live Archive</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox_dlc_titleupdates" target="_blank">Download</a></li>
+    </ul>
+
+    <div class="footer">
+        Powered by BoneCrew Vault
+    </div>
+</div>
+
+</body>
+</html>
