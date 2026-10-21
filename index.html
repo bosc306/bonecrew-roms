@@ -11,17 +11,15 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            /* Hintergrund exakt an den dunklen Rand deines neuen Banners angepasst */
             background-color: #070c14;
             color: #e0e0e0;
             margin: 0;
             padding: 30px 0 50px 0;
         }
 
-        /* Zentrierter und kleinerer Banner-Header */
         .banner-header {
             width: 100%;
-            max-width: 950px; /* Gleiche kompakte Breite wie die Vault-Box unten */
+            max-width: 950px;
             margin: 0 auto 25px auto;
             text-align: center;
         }
@@ -34,7 +32,6 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
         }
 
-        /* Hauptcontainer im abgestimmten Look */
         .container {
             max-width: 950px;
             margin: 0 auto;
@@ -64,15 +61,57 @@
             margin-bottom: 25px;
         }
 
-        /* Liste */
-        ul {
+        /* Such- & Filterbereich */
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        select, input[type="text"] {
+            background-color: #101c2e;
+            border: 1px solid #1a273b;
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.95em;
+            outline: none;
+        }
+
+        select {
+            flex: 1;
+            min-width: 200px;
+            cursor: pointer;
+        }
+
+        input[type="text"] {
+            flex: 2;
+            min-width: 250px;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: #ff9900;
+        }
+
+        .file-count {
+            color: #00ff66;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        /* Spiele-Liste */
+        ul.file-list {
             list-style-type: none;
             padding: 0;
             margin: 0;
+            max-height: 600px;
+            overflow-y: auto;
         }
 
-        li {
-            padding: 14px 16px;
+        ul.file-list li {
+            padding: 12px 16px;
             border-bottom: 1px solid #142033;
             display: flex;
             justify-content: space-between;
@@ -81,30 +120,32 @@
             border-radius: 6px;
         }
 
-        li:hover {
+        ul.file-list li:hover {
             background-color: #101c2e;
             border-left: 4px solid #00ff66;
             padding-left: 12px;
         }
 
-        .title {
-            font-weight: 600;
+        .game-title {
+            font-weight: 500;
             color: #d1dfef;
-            font-size: 0.95em;
+            font-size: 0.9em;
+            word-break: break-word;
+            padding-right: 15px;
         }
 
-        /* Buttons im feurigen Orange mit Neongrün-Hover */
         a.dl-btn {
             background: linear-gradient(135deg, #ff9900 0%, #cc5500 100%);
             color: #ffffff;
-            padding: 8px 18px;
+            padding: 6px 14px;
             border-radius: 5px;
             text-decoration: none;
-            font-size: 0.85em;
+            font-size: 0.8em;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1px;
             box-shadow: 0 0 10px rgba(255, 153, 0, 0.3);
+            white-space: nowrap;
             transition: all 0.2s ease-in-out;
         }
 
@@ -112,7 +153,13 @@
             background: linear-gradient(135deg, #00ff66 0%, #009933 100%);
             color: #000000;
             box-shadow: 0 0 15px rgba(0, 255, 102, 0.7);
-            transform: translateY(-2px);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #ff9900;
+            font-weight: bold;
         }
 
         .footer {
@@ -126,63 +173,122 @@
 <body>
 
 <div class="banner-header">
-    <!-- Falls deine Datei auf GitHub anders heißt, hier den Dateinamen anpassen! -->
     <img src="Unbenannt.png" alt="BoneCrew Banner">
 </div>
 
 <div class="container">
     <h1>Microsoft Xbox 360 Vault</h1>
-    <p class="subtitle">Direkte Archive-Downloads im BoneCrew-Design</p>
+    <p class="subtitle">Durchsuche alle direkten Spiel-Downloads live auf Archive.org</p>
     
-    <ul>
-        <li><span class="title">Microsoft Xbox 360 - # - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_number" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - A (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_a_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - A (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_a_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - B (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_b_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - B (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_b_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - C (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_c_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - C (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_c_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - D (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_d_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - D (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_d_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - D (Part 3) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_d_part3" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - E - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_e" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - F (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_f_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - F (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_f_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - G - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_g" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - H - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_h" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - I - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_i" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - J - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_j" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - K - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_k" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - L - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_l" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - M (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_m_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - M (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_m_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - N (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_n_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - N (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_n_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - O - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_o" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - P - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_p" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Q - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_q" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - R - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_r" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - S (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_s_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - S (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_s_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - T (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_t_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - T (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_t_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - U - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_u" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - V - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_v" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - W - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_w" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - X (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_x_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - X (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_x_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Y - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_y" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Z - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_z" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Title Updates - No-Intro</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_titleupdates" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Digital (Part 1)</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_digital_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Digital (Part 2)</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_digital_part2" target="_blank">Download</a></li>
-        <li><span class="title">Rock Band DLC Complete Collection Xbox 360 by Americo</span> <a class="dl-btn" href="https://archive.org/download/rock-band-dlc-complete-collection-xbox-360-by-americo" target="_blank">Download</a></li>
-    </ul>
+    <div class="controls">
+        <select id="repoSelect" onchange="loadCategoryFiles()">
+            <option value="microsoft_xbox360_a_part1">Buchstabe A (Part 1)</option>
+            <option value="microsoft_xbox360_a_part2">Buchstabe A (Part 2)</option>
+            <option value="microsoft_xbox360_b_part1">Buchstabe B (Part 1)</option>
+            <option value="microsoft_xbox360_b_part2">Buchstabe B (Part 2)</option>
+            <option value="microsoft_xbox360_c_part1">Buchstabe C (Part 1)</option>
+            <option value="microsoft_xbox360_c_part2">Buchstabe C (Part 2)</option>
+            <option value="microsoft_xbox360_d_part1">Buchstabe D (Part 1)</option>
+            <option value="microsoft_xbox360_d_part2">Buchstabe D (Part 2)</option>
+            <option value="microsoft_xbox360_e">Buchstabe E</option>
+            <option value="microsoft_xbox360_f_part1">Buchstabe F (Part 1)</option>
+            <option value="microsoft_xbox360_g">Buchstabe G</option>
+            <option value="microsoft_xbox360_h">Buchstabe H</option>
+            <option value="microsoft_xbox360_i">Buchstabe I</option>
+            <option value="microsoft_xbox360_j">Buchstabe J</option>
+            <option value="microsoft_xbox360_k">Buchstabe K</option>
+            <option value="microsoft_xbox360_l">Buchstabe L</option>
+            <option value="microsoft_xbox360_m_part1">Buchstabe M (Part 1)</option>
+            <option value="microsoft_xbox360_n_part1">Buchstabe N (Part 1)</option>
+            <option value="microsoft_xbox360_o">Buchstabe O</option>
+            <option value="microsoft_xbox360_p">Buchstabe P</option>
+            <option value="microsoft_xbox360_q">Buchstabe Q</option>
+            <option value="microsoft_xbox360_r">Buchstabe R</option>
+            <option value="microsoft_xbox360_s_part1">Buchstabe S (Part 1)</option>
+            <option value="microsoft_xbox360_t_part1">Buchstabe T (Part 1)</option>
+            <option value="microsoft_xbox360_u">Buchstabe U</option>
+            <option value="microsoft_xbox360_v">Buchstabe V</option>
+            <option value="microsoft_xbox360_w">Buchstabe W</option>
+            <option value="microsoft_xbox360_x_part1">Buchstabe X (Part 1)</option>
+            <option value="microsoft_xbox360_y">Buchstabe Y</option>
+            <option value="microsoft_xbox360_z">Buchstabe Z</option>
+            <option value="microsoft_xbox360_digital_part1">Digital Games (Part 1)</option>
+            <option value="microsoft_xbox360_titleupdates">Title Updates</option>
+        </select>
+
+        <input type="text" id="searchInput" placeholder="Spiel suchen..." onkeyup="filterFiles()">
+    </div>
+
+    <div id="fileCount" class="file-count"></div>
+    <div id="loadingStatus" class="loading" style="display:none;">Lade Spieledateien von Archive.org...</div>
+
+    <ul id="fileList" class="file-list"></ul>
 
     <div class="footer">
-        Powered by BoneCrew Vault
+        Powered by BoneCrew Vault &amp; Archive.org
     </div>
 </div>
+
+<script>
+    let currentFiles = [];
+
+    async function loadCategoryFiles() {
+        const repo = document.getElementById('repoSelect').value;
+        const listContainer = document.getElementById('fileList');
+        const status = document.getElementById('loadingStatus');
+        const countDisplay = document.getElementById('fileCount');
+
+        listContainer.innerHTML = '';
+        status.style.display = 'block';
+        countDisplay.innerText = '';
+
+        try {
+            // Abfrage der Dateiliste über die offizielle Archive.org Metadata-API
+            const response = await fetch(`https://archive.org/metadata/${repo}/files`);
+            const data = await response.json();
+
+            // Nur ZIP/ISO Spieledateien filtern
+            currentFiles = data.result.filter(file => file.name.endsWith('.zip') || file.name.endsWith('.iso'));
+
+            status.style.display = 'none';
+            renderFiles(currentFiles, repo);
+        } catch (error) {
+            status.style.display = 'block';
+            status.innerText = 'Fehler beim Laden der Dateiliste von Archive.org!';
+        }
+    }
+
+    function renderFiles(files, repo) {
+        const listContainer = document.getElementById('fileList');
+        const countDisplay = document.getElementById('fileCount');
+        listContainer.innerHTML = '';
+
+        countDisplay.innerText = `${files.length} Spiele gefunden`;
+
+        files.forEach(file => {
+            const li = document.createElement('li');
+            
+            // Direkt-URL zum Download der einzelnen Spieledatei aufbauen
+            const directUrl = `https://archive.org/download/${repo}/${encodeURIComponent(file.name)}`;
+
+            li.innerHTML = `
+                <span class="game-title">${file.name}</span>
+                <a class="dl-btn" href="${directUrl}" target="_blank">Download</a>
+            `;
+            listContainer.appendChild(li);
+        });
+    }
+
+    function filterFiles() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const repo = document.getElementById('repoSelect').value;
+        const filtered = currentFiles.filter(f => f.name.toLowerCase().includes(query));
+        renderFiles(filtered, repo);
+    }
+
+    // Beim Laden der Seite automatisch den ersten Buchstaben aufrufen
+    loadCategoryFiles();
+</script>
 
 </body>
 </html>
