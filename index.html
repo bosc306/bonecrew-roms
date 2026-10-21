@@ -5,39 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BoneCrew - Xbox 360 Vault</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #0d0f12;
-            color: #e0e0e0;
-            margin: 0;
-            padding: 0 0 40px 0;
+        * {
+            box-sizing: border-box;
         }
 
-        /* Banner Header im BoneCrew-Stil */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            /* Hintergrundfarbe exakt an das Dunkelblau/Schwarz des Banner-Zentrums angepasst */
+            background-color: #030811;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0 0 50px 0;
+        }
+
+        /* Banner Header - schneidet Ränder ab und passt sich nahtlos an */
         .banner-header {
             width: 100%;
-            background-color: #05070a;
-            border-bottom: 3px solid #ff9900;
-            box-shadow: 0 5px 25px rgba(255, 153, 0, 0.2);
-            text-align: center;
+            height: 220px; /* Feste Höhe, damit das Banner knackig bleibt */
+            overflow: hidden;
+            position: relative;
+            background-color: #030811;
+            border-bottom: 2px solid #ff9900;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.9);
         }
 
         .banner-header img {
             width: 100%;
-            max-width: 1400px;
-            height: auto;
-            display: block;
-            margin: 0 auto;
+            height: 100%;
+            /* Zoomt leicht hinein, um die weißen/blauen Ränder der Bilddatei auszublenden */
+            object-fit: cover;
+            object-position: center;
+            transform: scale(1.15); 
         }
 
-        /* Hauptcontainer */
+        /* Hauptcontainer im düsteren Gold/Grün-Look */
         .container {
             max-width: 950px;
-            margin: 30px auto 0 auto;
-            background: rgba(22, 26, 33, 0.95);
+            margin: 40px auto 0 auto;
+            background: #09101d;
             padding: 30px;
             border-radius: 12px;
-            border: 1px solid #2a323d;
+            border: 1px solid #1a2638;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
@@ -45,18 +53,18 @@
             color: #ff9900;
             text-align: center;
             margin-top: 0;
-            font-size: 2.2em;
+            font-size: 2em;
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(255, 153, 0, 0.3);
-            border-bottom: 2px solid #2a323d;
+            text-shadow: 0 0 12px rgba(255, 153, 0, 0.4);
+            border-bottom: 2px solid #1a2638;
             padding-bottom: 15px;
         }
 
         p.subtitle {
-            color: #8a99ad;
+            color: #6c829e;
             text-align: center;
-            font-size: 1em;
+            font-size: 0.95em;
             margin-bottom: 25px;
         }
 
@@ -69,7 +77,7 @@
 
         li {
             padding: 14px 16px;
-            border-bottom: 1px solid #1e242d;
+            border-bottom: 1px solid #131d2c;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -78,18 +86,18 @@
         }
 
         li:hover {
-            background-color: #1a212b;
+            background-color: #0f1927;
             border-left: 4px solid #00ff66;
             padding-left: 12px;
         }
 
         .title {
             font-weight: 600;
-            color: #d1d9e6;
+            color: #c9d6e8;
             font-size: 0.95em;
         }
 
-        /* Buttons mit Gold/Orange- & Grün-Effekt */
+        /* Buttons mit feurigem Orange & Leuchtgrün beim Hover */
         a.dl-btn {
             background: linear-gradient(135deg, #ff9900 0%, #cc5500 100%);
             color: #ffffff;
@@ -106,15 +114,15 @@
 
         a.dl-btn:hover {
             background: linear-gradient(135deg, #00ff66 0%, #009933 100%);
-            color: #000;
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.6);
+            color: #000000;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.7);
             transform: translateY(-2px);
         }
 
         .footer {
             margin-top: 30px;
             font-size: 0.85em;
-            color: #556270;
+            color: #41536b;
             text-align: center;
         }
     </style>
