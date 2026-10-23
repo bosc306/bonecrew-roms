@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BoneCrew - Xbox 360 Vault</title>
+    <title>BoneCrew - Vault</title>
     <style>
         * {
             box-sizing: border-box;
@@ -55,6 +55,7 @@
             letter-spacing: 1px;
             transition: all 0.2s ease-in-out;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            cursor: pointer;
         }
 
         .nav-btn:hover {
@@ -166,69 +167,149 @@
     <img src="Unbenannt.png" alt="BoneCrew Banner">
 </div>
 
-<!-- Konsolen-Navigation -->
+<!-- Konsolen-Navigation / Dynamische Tabs -->
 <div class="console-nav">
-    <a href="index.html" class="nav-btn active">Xbox 360</a>
-    <a href="xbox-classic.html" class="nav-btn">Xbox Classic</a>
+    <button class="nav-btn active" onclick="switchConsole('xbox360', this)">Xbox 360</button>
+    <button class="nav-btn" onclick="switchConsole('xboxClassic', this)">Xbox Classic</button>
 </div>
 
 <div class="container">
-    <h1>Microsoft Xbox 360 Vault</h1>
+    <h1 id="vaultTitle">Microsoft Xbox 360 Vault</h1>
     <p class="subtitle">Direkte Archive-Downloads im BoneCrew-Design</p>
     
-    <ul>
-        <li><span class="title">Microsoft Xbox 360 - # - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_number" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - A (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_a_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - A (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_a_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - B (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_b_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - B (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_b_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - C (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_c_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - C (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_c_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - D (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_d_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - D (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_d_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - D (Part 3) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_d_part3" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - E - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_e" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - F (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_f_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - F (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_f_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - G - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_g" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - H - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_h" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - I - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_i" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - J - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_j" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - K - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_k" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - L - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_l" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - M (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_m_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - M (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_m_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - N (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_n_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - N (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_n_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - O - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_o" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - P - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_p" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Q - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_q" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - R - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_r" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - S (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_s_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - S (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_s_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - T (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_t_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - T (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_t_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - U - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_u" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - V - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_v" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - W - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_w" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - X (Part 1) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_x_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - X (Part 2) - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_x_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Y - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_y" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Z - Redump.org</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_z" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Title Updates - No-Intro</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_titleupdates" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Digital (Part 1)</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_digital_part1" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Digital (Part 2)</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_digital_part2" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Digital (Part 3)</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_digital_part3" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Digital (Part 4)</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_digital_part4" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Digital (Part 5)</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_digital_part5" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Digital (Part 6)</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_digital_part6" target="_blank">Download</a></li>
-        <li><span class="title">Microsoft Xbox 360 - Digital (Part 7)</span> <a class="dl-btn" href="https://archive.org/download/microsoft_xbox360_digital_part7" target="_blank">Download</a></li>
+    <ul id="vaultList">
+        <!-- Der Inhalt wird per JavaScript dynamisch erzeugt -->
     </ul>
 
     <div class="footer">
         Powered by BoneCrew Vault
     </div>
 </div>
+
+<script>
+    // Zentrale Datenstruktur für alle Konsolen
+    const vaultData = {
+        xbox360: {
+            title: "Microsoft Xbox 360 Vault",
+            items: [
+                { name: "Microsoft Xbox 360 - # - Redump.org", link: "https://archive.org/download/microsoft_xbox360_number" },
+                { name: "Microsoft Xbox 360 - A (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_a_part1" },
+                { name: "Microsoft Xbox 360 - A (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_a_part2" },
+                { name: "Microsoft Xbox 360 - B (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_b_part1" },
+                { name: "Microsoft Xbox 360 - B (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_b_part2" },
+                { name: "Microsoft Xbox 360 - C (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_c_part1" },
+                { name: "Microsoft Xbox 360 - C (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_c_part2" },
+                { name: "Microsoft Xbox 360 - D (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_d_part1" },
+                { name: "Microsoft Xbox 360 - D (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_d_part2" },
+                { name: "Microsoft Xbox 360 - D (Part 3) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_d_part3" },
+                { name: "Microsoft Xbox 360 - E - Redump.org", link: "https://archive.org/download/microsoft_xbox360_e" },
+                { name: "Microsoft Xbox 360 - F (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_f_part1" },
+                { name: "Microsoft Xbox 360 - F (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_f_part2" },
+                { name: "Microsoft Xbox 360 - G - Redump.org", link: "https://archive.org/download/microsoft_xbox360_g" },
+                { name: "Microsoft Xbox 360 - H - Redump.org", link: "https://archive.org/download/microsoft_xbox360_h" },
+                { name: "Microsoft Xbox 360 - I - Redump.org", link: "https://archive.org/download/microsoft_xbox360_i" },
+                { name: "Microsoft Xbox 360 - J - Redump.org", link: "https://archive.org/download/microsoft_xbox360_j" },
+                { name: "Microsoft Xbox 360 - K - Redump.org", link: "https://archive.org/download/microsoft_xbox360_k" },
+                { name: "Microsoft Xbox 360 - L - Redump.org", link: "https://archive.org/download/microsoft_xbox360_l" },
+                { name: "Microsoft Xbox 360 - M (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_m_part1" },
+                { name: "Microsoft Xbox 360 - M (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_m_part2" },
+                { name: "Microsoft Xbox 360 - N (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_n_part1" },
+                { name: "Microsoft Xbox 360 - N (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_n_part2" },
+                { name: "Microsoft Xbox 360 - O - Redump.org", link: "https://archive.org/download/microsoft_xbox360_o" },
+                { name: "Microsoft Xbox 360 - P - Redump.org", link: "https://archive.org/download/microsoft_xbox360_p" },
+                { name: "Microsoft Xbox 360 - Q - Redump.org", link: "https://archive.org/download/microsoft_xbox360_q" },
+                { name: "Microsoft Xbox 360 - R - Redump.org", link: "https://archive.org/download/microsoft_xbox360_r" },
+                { name: "Microsoft Xbox 360 - S (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_s_part1" },
+                { name: "Microsoft Xbox 360 - S (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_s_part2" },
+                { name: "Microsoft Xbox 360 - T (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_t_part1" },
+                { name: "Microsoft Xbox 360 - T (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_t_part2" },
+                { name: "Microsoft Xbox 360 - U - Redump.org", link: "https://archive.org/download/microsoft_xbox360_u" },
+                { name: "Microsoft Xbox 360 - V - Redump.org", link: "https://archive.org/download/microsoft_xbox360_v" },
+                { name: "Microsoft Xbox 360 - W - Redump.org", link: "https://archive.org/download/microsoft_xbox360_w" },
+                { name: "Microsoft Xbox 360 - X (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_x_part1" },
+                { name: "Microsoft Xbox 360 - X (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_x_part2" },
+                { name: "Microsoft Xbox 360 - Y - Redump.org", link: "https://archive.org/download/microsoft_xbox360_y" },
+                { name: "Microsoft Xbox 360 - Z - Redump.org", link: "https://archive.org/download/microsoft_xbox360_z" },
+                { name: "Microsoft Xbox 360 - Title Updates - No-Intro", link: "https://archive.org/download/microsoft_xbox360_titleupdates" },
+                { name: "Microsoft Xbox 360 - Digital (Part 1)", link: "https://archive.org/download/microsoft_xbox360_digital_part1" },
+                { name: "Microsoft Xbox 360 - Digital (Part 2)", link: "https://archive.org/download/microsoft_xbox360_digital_part2" },
+                { name: "Microsoft Xbox 360 - Digital (Part 3)", link: "https://archive.org/download/microsoft_xbox360_digital_part3" },
+                { name: "Microsoft Xbox 360 - Digital (Part 4)", link: "https://archive.org/download/microsoft_xbox360_digital_part4" },
+                { name: "Microsoft Xbox 360 - Digital (Part 5)", link: "https://archive.org/download/microsoft_xbox360_digital_part5" },
+                { name: "Microsoft Xbox 360 - Digital (Part 6)", link: "https://archive.org/download/microsoft_xbox360_digital_part6" },
+                { name: "Microsoft Xbox 360 - Digital (Part 7)", link: "https://archive.org/download/microsoft_xbox360_digital_part7" }
+            ]
+        },
+        xboxClassic: {
+            title: "Microsoft Xbox Classic Vault",
+            items: [
+                { name: "Microsoft Xbox - # - Redump.org", link: "https://archive.org/download/microsoft_xbox_number" },
+                { name: "Microsoft Xbox - A - Redump.org", link: "https://archive.org/download/microsoft_xbox_a" },
+                { name: "Microsoft Xbox - B - Redump.org", link: "https://archive.org/download/microsoft_xbox_b" },
+                { name: "Microsoft Xbox - C (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_c_part1" },
+                { name: "Microsoft Xbox - C (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_c_part2" },
+                { name: "Microsoft Xbox - D - Redump.org", link: "https://archive.org/download/microsoft_xbox_d" },
+                { name: "Microsoft Xbox - E - Redump.org", link: "https://archive.org/download/microsoft_xbox_e" },
+                { name: "Microsoft Xbox - F - Redump.org", link: "https://archive.org/download/microsoft_xbox_f" },
+                { name: "Microsoft Xbox - G - Redump.org", link: "https://archive.org/download/microsoft_xbox_g" },
+                { name: "Microsoft Xbox - H - Redump.org", link: "https://archive.org/download/microsoft_xbox_h" },
+                { name: "Microsoft Xbox - I - Redump.org", link: "https://archive.org/download/microsoft_xbox_i" },
+                { name: "Microsoft Xbox - J - Redump.org", link: "https://archive.org/download/microsoft_xbox_j" },
+                { name: "Microsoft Xbox - K - Redump.org", link: "https://archive.org/download/microsoft_xbox_k" },
+                { name: "Microsoft Xbox - L - Redump.org", link: "https://archive.org/download/microsoft_xbox_l" },
+                { name: "Microsoft Xbox - M (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_m_part1" },
+                { name: "Microsoft Xbox - M (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_m_part2" },
+                { name: "Microsoft Xbox - N - Redump.org", link: "https://archive.org/download/microsoft_xbox_n" },
+                { name: "Microsoft Xbox - O - Redump.org", link: "https://archive.org/download/microsoft_xbox_o" },
+                { name: "Microsoft Xbox - P - Redump.org", link: "https://archive.org/download/microsoft_xbox_p" },
+                { name: "Microsoft Xbox - Q - Redump.org", link: "https://archive.org/download/microsoft_xbox_q" },
+                { name: "Microsoft Xbox - R - Redump.org", link: "https://archive.org/download/microsoft_xbox_r" },
+                { name: "Microsoft Xbox - S (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_s_part1" },
+                { name: "Microsoft Xbox - S (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_s_part2" },
+                { name: "Microsoft Xbox - T (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_t_part1" },
+                { name: "Microsoft Xbox - T (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_t_part2" },
+                { name: "Microsoft Xbox - U - Redump.org", link: "https://archive.org/download/microsoft_xbox_u" },
+                { name: "Microsoft Xbox - V - Redump.org", link: "https://archive.org/download/microsoft_xbox_v" },
+                { name: "Microsoft Xbox - W - Redump.org", link: "https://archive.org/download/microsoft_xbox_w" },
+                { name: "Microsoft Xbox - X - Redump.org", link: "https://archive.org/download/microsoft_xbox_x" },
+                { name: "Microsoft Xbox - Y - Redump.org", link: "https://archive.org/download/microsoft_xbox_y" },
+                { name: "Microsoft Xbox - Z - Redump.org", link: "https://archive.org/download/microsoft_xbox_z" },
+                { name: "Microsoft Xbox - Title Updates & DLC", link: "https://archive.org/download/microsoft_xbox_dlc_titleupdates" }
+            ]
+        }
+    };
+
+    function switchConsole(key, element) {
+        const consoleData = vaultData[key];
+        if (!consoleData) return;
+
+        // Titel ändern
+        document.getElementById('vaultTitle').innerText = consoleData.title;
+
+        // Liste neu aufbauen
+        const listContainer = document.getElementById('vaultList');
+        listContainer.innerHTML = '';
+
+        consoleData.items.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="title">${item.name}</span> <a class="dl-btn" href="${item.link}" target="_blank">Download</a>`;
+            listContainer.appendChild(li);
+        });
+
+        // Aktiven Button optisch anpassen
+        if (element) {
+            const buttons = document.querySelectorAll('.console-nav .nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+        }
+    }
+
+    // Beim Laden der Seite direkt Xbox 360 anzeigen
+    document.addEventListener("DOMContentLoaded", () => {
+        const firstBtn = document.querySelector('.console-nav .nav-btn');
+        switchConsole('xbox360', firstBtn);
+    });
+</script>
 
 </body>
 </html>
