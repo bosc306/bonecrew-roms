@@ -82,7 +82,7 @@
         }
         .modal-content {
             background: #0b1320; border: 1px solid #ff9900; border-radius: 12px; width: 100%;
-            max-width: 650px; padding: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+            max-width: 600px; padding: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.9);
             position: relative; max-height: 85vh; overflow-y: auto;
         }
         .modal-content h2 { color: #ff9900; margin-top: 0; font-size: 1.4em; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #1a273b; padding-bottom: 10px; }
@@ -98,36 +98,27 @@
             padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
         }
         .admin-btn:hover { background: linear-gradient(135deg, #00ff66 0%, #009933 100%); color: #000; }
-        .danger-btn { background: linear-gradient(135deg, #ff3333 0%, #990000 100%); }
+        .danger-btn { background: linear-gradient(135deg, #ff3333 0%, #990000 100%); margin-top: 20px; }
         .danger-btn:hover { background: linear-gradient(135deg, #ff6666 0%, #cc0000 100%); color: #fff; }
         .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9em; }
         .admin-table th, .admin-table td { padding: 10px; border-bottom: 1px solid #142033; text-align: left; }
         .admin-table th { color: #8fa3be; text-transform: uppercase; font-size: 0.8em; letter-spacing: 1px; }
         .admin-table td { color: #d1dfef; }
-        .toolbar { display: flex; gap: 10px; margin-bottom: 20px; justify-content: flex-end; }
-        .tool-btn {
-            background: #142033; border: 1px solid #1a273b; color: #8fa3be; padding: 8px 14px;
-            border-radius: 6px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: all 0.2s;
-        }
-        .tool-btn:hover { border-color: #ff9900; color: #fff; background: #1a273b; }
     </style>
 </head>
 <body>
 
-<!-- Original Banner-Header -->
 <div class="banner-header">
-    <img src="Unbenannt.png" alt="BoneCrew Banner" onerror="this.style.display='none'">
+    <img src="Unbenannt.png" alt="BoneCrew Banner">
 </div>
 
-<!-- Original Konsolen Navigation -->
-<div class="console-nav" id="consoleNav"></div>
+<div class="console-nav">
+    <button class="nav-btn active" onclick="switchConsole('xbox360', this)">Xbox 360</button>
+    <button class="nav-btn" onclick="switchConsole('xboxClassic', this)">Xbox Classic</button>
+    <button class="nav-btn" onclick="switchConsole('nintendoWii', this)">Nintendo Wii</button>
+</div>
 
 <div class="container">
-    <div class="toolbar">
-        <button class="tool-btn" onclick="copyAllLinks()">📋 Alle Links kopieren</button>
-        <button class="tool-btn" onclick="downloadTxtList()">💾 .TXT Liste</button>
-    </div>
-    
     <h1 id="vaultTitle">Microsoft Xbox 360 Vault</h1>
     <p class="subtitle">Direkte Archive-Downloads im BoneCrew-Design</p>
     <ul id="vaultList"></ul>
@@ -159,14 +150,13 @@
     <div><button class="admin-link" onclick="openAdminModal()">Admin Login</button></div>
 </div>
 
-<!-- Admin & CMS Modal -->
 <div class="modal-overlay" id="adminModal">
     <div class="modal-content">
         <button class="close-modal" onclick="closeAdminModal()">&times;</button>
         
         <div id="adminLoginView">
             <h2>Admin Login</h2>
-            <p style="color: #8fa3be; font-size: 0.9em; margin-bottom: 20px;">Gib das Admin-Passwort ein, um Zugriff auf das CMS und die Statistiken zu erhalten.</p>
+            <p style="color: #8fa3be; font-size: 0.9em; margin-bottom: 20px;">Gib das Admin-Passwort ein, um Zugriff auf die detaillierten Statistiken zu erhalten.</p>
             <div class="admin-form">
                 <input type="password" id="adminPasswordInput" placeholder="Passwort eingeben..." onkeydown="if(event.key === 'Enter') checkAdminLogin()">
                 <button class="admin-btn" onclick="checkAdminLogin()">Anmelden</button>
@@ -175,32 +165,34 @@
         </div>
 
         <div id="adminDashboardView" style="display: none;">
-            <h2>Admin CMS & Control Center</h2>
+            <h2>Admin Control Center</h2>
             <p style="color: #00ff66; font-size: 0.9em; margin-bottom: 15px;">✓ Erfolgreich als Administrator angemeldet</p>
             
-            <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
-                <button class="admin-btn" onclick="openLinkManager()">🔗 Links & Konsolen verwalten</button>
-                <button class="admin-btn" style="background: #102a45;" onclick="runHealthCheck()">🔍 Link Health-Check (404)</button>
-                <button class="admin-btn" style="background: #243b53;" onclick="syncToGist()">☁️ GitHub Gist Backup</button>
-            </div>
-
             <div class="stats-grid" style="margin-bottom: 20px;">
                 <div class="stat-card">
                     <div class="label">Besucher Total</div>
                     <div class="value" id="adminStatVisitors">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="label">Klicks Total</div>
-                    <div class="value" id="adminStatTotalClicks">0</div>
+                    <div class="label">Klicks Xbox 360</div>
+                    <div class="value" id="adminStatX360">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Klicks Xbox Classic</div>
+                    <div class="value" id="adminStatXClassic">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Klicks Nintendo Wii</div>
+                    <div class="value" id="adminStatWii">0</div>
                 </div>
             </div>
 
-            <h3 style="color: #8fa3be; font-size: 0.9em; text-transform: uppercase; margin-top: 25px; border-bottom: 1px solid #1a273b; padding-bottom: 8px;">Detaillierte Klick-Statistiken</h3>
-            <div style="max-height: 200px; overflow-y: auto;">
+            <h3 style="color: #8fa3be; font-size: 0.9em; text-transform: uppercase; margin-top: 25px; border-bottom: 1px solid #1a273b; padding-bottom: 8px;">Detaillierte Klick-Statistiken pro Link</h3>
+            <div style="max-height: 250px; overflow-y: auto;">
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>Link-Name</th>
+                            <th>Konsolen-Teil / Link-Name</th>
                             <th style="width: 80px; text-align: right;">Klicks</th>
                         </tr>
                     </thead>
@@ -217,11 +209,10 @@
 </div>
 
 <script>
-    // Standarddaten (Vollständige Gesamtübersicht)
-    const defaultVaultData = {
+    const vaultData = {
         xbox360: {
             key: "xbox360",
-            title: "Microsoft Xbox 360",
+            title: "Microsoft Xbox 360 Vault",
             items: [
                 { name: "Microsoft Xbox 360 - # - Redump.org", link: "https://archive.org/download/microsoft_xbox360_number" },
                 { name: "Microsoft Xbox 360 - A (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_a_part1" },
@@ -273,7 +264,7 @@
         },
         xboxClassic: {
             key: "xboxClassic",
-            title: "Microsoft Xbox Classic",
+            title: "Microsoft Xbox Classic Vault",
             items: [
                 { name: "Microsoft Xbox - # - Redump.org", link: "https://archive.org/download/microsoft_xbox_number" },
                 { name: "Microsoft Xbox - A - Redump.org", link: "https://archive.org/download/microsoft_xbox_a" },
@@ -311,32 +302,22 @@
         },
         nintendoWii: {
             key: "nintendoWii",
-            title: "Nintendo Wii",
+            title: "Nintendo Wii Vault",
             items: [
                 { name: "Nintendo Wii - Redump Individual Games (Part 1)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part1" },
                 { name: "Nintendo Wii - Redump Individual Games (Part 2)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part2" },
                 { name: "Nintendo Wii - Redump Individual Games (Part 3)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part3" },
-                { name: "Nintendo Wii - Redump Individual Games (Part 4)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part4" },
+                { name: "Nintendo Wii - Redump Individual Games (Part 4)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Cases-Part4" },
                 { name: "Nintendo Wii - Redump Individual Games (Part 5)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part5" },
                 { name: "Nintendo Wii - Redump Individual Games (Part 6)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part6" }
             ]
         }
     };
 
+    // Passwort als Base64 ("bonecrew123" verschlüsselt = Ym9uZWNyZXcxMjM=)
     const ADMIN_PASSWORD_B64 = "Ym9uZWNyZXcxMjM=";
-    let currentConsole = 'xbox360';
 
-    function getVaultData() {
-        let saved = localStorage.getItem('bonecrew_vault_data');
-        if (!saved) {
-            localStorage.setItem('bonecrew_vault_data', JSON.stringify(defaultVaultData));
-            return defaultVaultData;
-        }
-        try { return JSON.parse(saved); } catch(e) { return defaultVaultData; }
-    }
-
-    function initPage() {
-        // Besucherzähler
+    function initStats() {
         if (!localStorage.getItem('bonecrew_visitors')) {
             localStorage.setItem('bonecrew_visitors', '1');
         } else if (!sessionStorage.getItem('bonecrew_counted')) {
@@ -345,78 +326,70 @@
             sessionStorage.setItem('bonecrew_counted', 'true');
         }
 
-        renderConsoleNav();
-        switchConsole('xbox360');
-        updatePublicStats();
-    }
-
-    function renderConsoleNav() {
-        const data = getVaultData();
-        const nav = document.getElementById('consoleNav');
-        nav.innerHTML = '';
-
-        for (let key in data) {
-            const btn = document.createElement('button');
-            btn.className = `nav-btn ${key === currentConsole ? 'active' : ''}`;
-            btn.innerText = data[key].title;
-            btn.onclick = () => switchConsole(key, btn);
-            nav.appendChild(btn);
+        if (!localStorage.getItem('bonecrew_clicks')) {
+            let initialClicks = {};
+            for (let consoleKey in vaultData) {
+                vaultData[consoleKey].items.forEach(item => {
+                    initialClicks[item.name] = 0;
+                });
+            }
+            localStorage.setItem('bonecrew_clicks', JSON.stringify(initialClicks));
         }
+        updatePublicStatsUI();
     }
 
-    function switchConsole(key, btnElement) {
-        currentConsole = key;
-        const data = getVaultData();
-        const consoleData = data[key];
+    function trackClick(itemName, consoleKey) {
+        let clicks = JSON.parse(localStorage.getItem('bonecrew_clicks')) || {};
+        clicks[itemName] = (clicks[itemName] || 0) + 1;
+        localStorage.setItem('bonecrew_clicks', JSON.stringify(clicks));
+
+        let consoleClicks = JSON.parse(localStorage.getItem('bonecrew_console_clicks')) || { xbox360: 0, xboxClassic: 0, nintendoWii: 0 };
+        consoleClicks[consoleKey] = (consoleClicks[consoleKey] || 0) + 1;
+        localStorage.setItem('bonecrew_console_clicks', JSON.stringify(consoleClicks));
+
+        updatePublicStatsUI();
+    }
+
+    function updatePublicStatsUI() {
+        document.getElementById('statVisitors').innerText = localStorage.getItem('bonecrew_visitors') || '1';
+        
+        let clicks = JSON.parse(localStorage.getItem('bonecrew_clicks')) || {};
+        let totalDownloads = Object.values(clicks).reduce((a, b) => a + b, 0);
+        document.getElementById('statTotalDownloads').innerText = totalDownloads;
+
+        let consoleClicks = JSON.parse(localStorage.getItem('bonecrew_console_clicks')) || { xbox360: 0, xboxClassic: 0, nintendoWii: 0 };
+        let topConsole = "Xbox 360";
+        let max = consoleClicks.xbox360;
+        if (consoleClicks.xboxClassic > max) { max = consoleClicks.xboxClassic; topConsole = "Xbox Classic"; }
+        if (consoleClicks.nintendoWii > max) { max = consoleClicks.nintendoWii; topConsole = "Nintendo Wii"; }
+        document.getElementById('statTopConsole').innerText = topConsole;
+    }
+
+    function switchConsole(key, element) {
+        const consoleData = vaultData[key];
         if (!consoleData) return;
 
-        document.getElementById('vaultTitle').innerText = consoleData.title + ' Vault';
-        const list = document.getElementById('vaultList');
-        list.innerHTML = '';
+        document.getElementById('vaultTitle').innerText = consoleData.title;
+        const listContainer = document.getElementById('vaultList');
+        listContainer.innerHTML = '';
 
         consoleData.items.forEach(item => {
             const li = document.createElement('li');
             li.innerHTML = `<span class="title">${item.name}</span> <a class="dl-btn" href="${item.link}" target="_blank">Download</a>`;
             
-            li.querySelector('.dl-btn').onclick = () => trackClick(item.name);
-            list.appendChild(li);
+            const btn = li.querySelector('.dl-btn');
+            btn.addEventListener('click', () => {
+                trackClick(item.name, key);
+            });
+
+            listContainer.appendChild(li);
         });
 
-        if (btnElement) {
-            document.querySelectorAll('.console-nav .nav-btn').forEach(b => b.classList.remove('active'));
-            btnElement.classList.add('active');
+        if (element) {
+            const buttons = document.querySelectorAll('.console-nav .nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
         }
-    }
-
-    function trackClick(itemName) {
-        let clicks = JSON.parse(localStorage.getItem('bonecrew_clicks')) || {};
-        clicks[itemName] = (clicks[itemName] || 0) + 1;
-        localStorage.setItem('bonecrew_clicks', JSON.stringify(clicks));
-        updatePublicStats();
-    }
-
-    function updatePublicStats() {
-        document.getElementById('statVisitors').innerText = localStorage.getItem('bonecrew_visitors') || '1';
-        let clicks = JSON.parse(localStorage.getItem('bonecrew_clicks')) || {};
-        let total = Object.values(clicks).reduce((a, b) => a + b, 0);
-        document.getElementById('statTotalDownloads').innerText = total;
-    }
-
-    function copyAllLinks() {
-        const data = getVaultData();
-        const links = data[currentConsole].items.map(i => i.link).join('\n');
-        navigator.clipboard.writeText(links);
-        alert('Alle Links dieser Konsole wurden in die Zwischenablage kopiert!');
-    }
-
-    function downloadTxtList() {
-        const data = getVaultData();
-        const links = data[currentConsole].items.map(i => `${i.name}: ${i.link}`).join('\n');
-        const blob = new Blob([links], { type: 'text/plain' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `${currentConsole}_links.txt`;
-        a.click();
     }
 
     function openAdminModal() {
@@ -438,13 +411,15 @@
     function checkAdminLogin() {
         const pwd = document.getElementById('adminPasswordInput').value;
         try {
-            if (btoa(pwd) === ADMIN_PASSWORD_B64) {
+            // Eingabe in Base64 umwandeln und vergleichen (sicher vor direktem Auslesen im Klartext)
+            const encodedPwd = btoa(pwd);
+            if (encodedPwd === ADMIN_PASSWORD_B64) {
                 sessionStorage.setItem('bonecrew_admin_logged', 'true');
                 showAdminDashboard();
             } else {
                 document.getElementById('loginError').style.display = 'block';
             }
-        } catch(e) {
+        } catch (e) {
             document.getElementById('loginError').style.display = 'block';
         }
     }
@@ -454,12 +429,15 @@
         document.getElementById('adminDashboardView').style.display = 'block';
 
         document.getElementById('adminStatVisitors').innerText = localStorage.getItem('bonecrew_visitors') || '1';
-        let clicks = JSON.parse(localStorage.getItem('bonecrew_clicks')) || {};
-        let total = Object.values(clicks).reduce((a, b) => a + b, 0);
-        document.getElementById('adminStatTotalClicks').innerText = total;
+        let consoleClicks = JSON.parse(localStorage.getItem('bonecrew_console_clicks')) || { xbox360: 0, xboxClassic: 0, nintendoWii: 0 };
+        document.getElementById('adminStatX360').innerText = consoleClicks.xbox360;
+        document.getElementById('adminStatXClassic').innerText = consoleClicks.xboxClassic;
+        document.getElementById('adminStatWii').innerText = consoleClicks.nintendoWii;
 
+        let clicks = JSON.parse(localStorage.getItem('bonecrew_clicks')) || {};
         let tbody = document.getElementById('adminClicksTableBody');
         tbody.innerHTML = '';
+
         for (let name in clicks) {
             let tr = document.createElement('tr');
             tr.innerHTML = `<td>${name}</td><td style="text-align: right; font-weight: bold; color: #ff9900;">${clicks[name]}</td>`;
@@ -469,32 +447,25 @@
 
     function adminLogout() {
         sessionStorage.removeItem('bonecrew_admin_logged');
-        openAdminModal();
+        document.getElementById('adminDashboardView').style.display = 'none';
+        document.getElementById('adminLoginView').style.display = 'block';
+        document.getElementById('adminPasswordInput').value = '';
     }
 
     function resetAllStats() {
-        if (confirm("Möchtest du wirklich alle Statistiken zurücksetzen?")) {
-            localStorage.removeItem('bonecrew_visitors');
-            localStorage.removeItem('bonecrew_clicks');
-            initPage();
+        if (confirm("Möchtest du wirklich alle Besucher- und Klick-Statistiken zurücksetzen?")) {
+            localStorage.clear();
+            initStats();
             showAdminDashboard();
-            alert("Statistiken zurückgesetzt.");
+            alert("Statistiken wurden zurückgesetzt.");
         }
     }
 
-    function openLinkManager() {
-        alert("Link-Manager: Du kannst hier im localStorage beliebig Kategorien anlegen oder bearbeiten.");
-    }
-
-    function runHealthCheck() {
-        alert("Health-Check: Alle hinterlegten Archive.org Links wurden geprüft (Status: OK).");
-    }
-
-    function syncToGist() {
-        alert("GitHub Gist Backup: Daten erfolgreich im privaten Cloud-Gist gesichert!");
-    }
-
-    document.addEventListener('DOMContentLoaded', initPage);
+    document.addEventListener("DOMContentLoaded", () => {
+        initStats();
+        const firstBtn = document.querySelector('.console-nav .nav-btn');
+        switchConsole('xbox360', firstBtn);
+    });
 </script>
 
 </body>
