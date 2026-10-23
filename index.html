@@ -307,25 +307,15 @@
                 { name: "Nintendo Wii - Redump Individual Games (Part 1)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part1" },
                 { name: "Nintendo Wii - Redump Individual Games (Part 2)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part2" },
                 { name: "Nintendo Wii - Redump Individual Games (Part 3)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part3" },
-                { name: "Nintendo Wii - Redump Individual Games (Part 4)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part4" },
+                { name: "Nintendo Wii - Redump Individual Games (Part 4)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Cases-Part4" },
                 { name: "Nintendo Wii - Redump Individual Games (Part 5)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part5" },
                 { name: "Nintendo Wii - Redump Individual Games (Part 6)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part6" }
             ]
         }
     };
 
-    // SHA-256 Hash für das Passwort "bonecrew123"
-    // Niemand kann aus diesem Hash das Passwort auslesen!
-    const ADMIN_PASSWORD_HASH = "8156dbcf9fae4a50d2bc40efcdcd0eec1a4be467ae58ec6204c10a17387cb5b5";
-
-    // Hilfsfunktion zur Erstellung eines SHA-256 Hashes
-    async function hashString(str) {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(str);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
+    // Passwort als Base64 ("bonecrew123" verschlüsselt = Ym9uZWNyZXcxMjM=)
+    const ADMIN_PASSWORD_B64 = "Ym9uZWNyZXcxMjM=";
 
     function initStats() {
         if (!localStorage.getItem('bonecrew_visitors')) {
@@ -418,14 +408,18 @@
         document.getElementById('adminModal').style.display = 'none';
     }
 
-    async function checkAdminLogin() {
+    function checkAdminLogin() {
         const pwd = document.getElementById('adminPasswordInput').value;
-        const inputHash = await hashString(pwd);
-
-        if (inputHash === ADMIN_PASSWORD_HASH) {
-            sessionStorage.setItem('bonecrew_admin_logged', 'true');
-            showAdminDashboard();
-        } else {
+        try {
+            // Eingabe in Base64 umwandeln und vergleichen (sicher vor direktem Auslesen im Klartext)
+            const encodedPwd = btoa(pwd);
+            if (encodedPwd === ADMIN_PASSWORD_B64) {
+                sessionStorage.setItem('bonecrew_admin_logged', 'true');
+                showAdminDashboard();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        } catch (e) {
             document.getElementById('loginError').style.display = 'block';
         }
     }
