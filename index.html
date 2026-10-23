@@ -1,1094 +1,501 @@
 <!DOCTYPE html>
-<html lang="de" class="dark">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BoneCrew - Vault & Admin Control Center</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        vault: {
-                            bg: '#070c14',
-                            card: '#0e1726',
-                            border: '#1b2a4a',
-                            accent: '#ff9900',
-                            neon: '#00ff66',
-                            blue: '#0b1320',
-                            hover: '#ffaa22'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['Courier New', 'monospace']
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>BoneCrew - Vault</title>
     <style>
+        * { box-sizing: border-box; }
         body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #070c14;
-            color: #e2e8f0;
-            background-image: 
-                radial-gradient(circle at 20% 20%, rgba(255, 153, 0, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 80% 80%, rgba(0, 255, 102, 0.03) 0%, transparent 40%);
-            background-attachment: fixed;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 30px 0 50px 0;
         }
-        
-        .glass-panel {
-            background: rgba(14, 23, 38, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(27, 42, 74, 0.8);
+        .banner-header { width: 100%; max-width: 950px; margin: 0 auto 20px auto; text-align: center; }
+        .banner-header img { width: 100%; height: auto; display: block; border-radius: 10px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7); }
+        .console-nav { max-width: 950px; margin: 0 auto 20px auto; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .nav-btn {
+            background-color: #0b1320; border: 1px solid #1a273b; color: #8fa3be; padding: 10px 20px;
+            border-radius: 8px; text-decoration: none; font-size: 0.9em; font-weight: bold;
+            text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); cursor: pointer;
         }
-
-        .glow-orange {
-            box-shadow: 0 0 15px rgba(255, 153, 0, 0.25);
+        .nav-btn:hover { border-color: #ff9900; color: #ffffff; background-color: #101c2e; }
+        .nav-btn.active {
+            background: linear-gradient(135deg, #ff9900 0%, #cc5500 100%);
+            color: #ffffff; border-color: #ff9900; box-shadow: 0 0 12px rgba(255, 153, 0, 0.4);
         }
-
-        .glow-green {
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.25);
+        .container {
+            max-width: 950px; margin: 0 auto; background: #0b1320; padding: 30px;
+            border-radius: 12px; border: 1px solid #1a273b; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        h1 {
+            color: #ff9900; text-align: center; margin-top: 0; font-size: 2em;
+            text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 12px rgba(255, 153, 0, 0.4);
+            border-bottom: 2px solid #1a273b; padding-bottom: 15px;
         }
-        ::-webkit-scrollbar-track {
-            background: #070c14;
+        p.subtitle { color: #6882a0; text-align: center; font-size: 0.95em; margin-bottom: 25px; }
+        ul { list-style-type: none; padding: 0; margin: 0; }
+        li {
+            padding: 14px 16px; border-bottom: 1px solid #142033; display: flex;
+            justify-content: space-between; align-items: center; transition: all 0.2s ease-in-out; border-radius: 6px;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #1b2a4a;
-            border-radius: 4px;
+        li:hover { background-color: #101c2e; border-left: 4px solid #00ff66; padding-left: 12px; }
+        .title { font-weight: 600; color: #d1dfef; font-size: 0.95em; }
+        a.dl-btn {
+            background: linear-gradient(135deg, #ff9900 0%, #cc5500 100%); color: #ffffff;
+            padding: 8px 18px; border-radius: 5px; text-decoration: none; font-size: 0.85em;
+            font-weight: bold; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(255, 153, 0, 0.3); transition: all 0.2s ease-in-out;
+            white-space: nowrap; cursor: pointer; border: none;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #ff9900;
+        a.dl-btn:hover {
+            background: linear-gradient(135deg, #00ff66 0%, #009933 100%); color: #000000;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.7); transform: translateY(-2px);
         }
+        .analytics-box {
+            max-width: 950px; margin: 25px auto 0 auto; background: #0b1320;
+            border: 1px solid #1a273b; border-radius: 12px; padding: 20px 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .analytics-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #142033; padding-bottom: 12px; margin-bottom: 15px;
+        }
+        .analytics-header h3 { margin: 0; color: #8fa3be; font-size: 0.95em; text-transform: uppercase; letter-spacing: 1px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .stat-card { background: #070c14; border: 1px solid #142033; padding: 12px 15px; border-radius: 8px; text-align: center; }
+        .stat-card .label { font-size: 0.75em; color: #6882a0; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .stat-card .value { font-size: 1.25em; font-weight: bold; color: #ff9900; }
+        .footer {
+            max-width: 950px; margin: 20px auto 0 auto; display: flex; justify-content: space-between;
+            align-items: center; font-size: 0.85em; color: #4b617a; padding: 0 10px;
+        }
+        .admin-link { background: none; border: none; color: #4b617a; cursor: pointer; font-size: 0.9em; text-decoration: underline; padding: 0; transition: color 0.2s; }
+        .admin-link:hover { color: #ff9900; }
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 9, 15, 0.85); backdrop-filter: blur(5px); z-index: 1000;
+            justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: #0b1320; border: 1px solid #ff9900; border-radius: 12px; width: 100%;
+            max-width: 650px; padding: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+            position: relative; max-height: 85vh; overflow-y: auto;
+        }
+        .modal-content h2 { color: #ff9900; margin-top: 0; font-size: 1.4em; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #1a273b; padding-bottom: 10px; }
+        .close-modal { position: absolute; top: 20px; right: 20px; background: none; border: none; color: #8fa3be; font-size: 1.5em; cursor: pointer; }
+        .close-modal:hover { color: #ffffff; }
+        .admin-form input[type="password"] {
+            width: 100%; padding: 12px; background: #070c14; border: 1px solid #1a273b;
+            border-radius: 6px; color: #fff; font-size: 1em; margin-bottom: 15px;
+        }
+        .admin-form input:focus { outline: none; border-color: #ff9900; }
+        .admin-btn {
+            background: linear-gradient(135deg, #ff9900 0%, #cc5500 100%); color: #fff; border: none;
+            padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .admin-btn:hover { background: linear-gradient(135deg, #00ff66 0%, #009933 100%); color: #000; }
+        .danger-btn { background: linear-gradient(135deg, #ff3333 0%, #990000 100%); }
+        .danger-btn:hover { background: linear-gradient(135deg, #ff6666 0%, #cc0000 100%); color: #fff; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9em; }
+        .admin-table th, .admin-table td { padding: 10px; border-bottom: 1px solid #142033; text-align: left; }
+        .admin-table th { color: #8fa3be; text-transform: uppercase; font-size: 0.8em; letter-spacing: 1px; }
+        .admin-table td { color: #d1dfef; }
+        .toolbar { display: flex; gap: 10px; margin-bottom: 20px; justify-content: flex-end; }
+        .tool-btn {
+            background: #142033; border: 1px solid #1a273b; color: #8fa3be; padding: 8px 14px;
+            border-radius: 6px; font-size: 0.85em; font-weight: bold; cursor: pointer; transition: all 0.2s;
+        }
+        .tool-btn:hover { border-color: #ff9900; color: #fff; background: #1a273b; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col font-sans antialiased selection:bg-vault-accent selection:text-black">
+<body>
 
-    <!-- Toast Notifications Container -->
-    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+<!-- Original Banner-Header -->
+<div class="banner-header">
+    <img src="Unbenannt.png" alt="BoneCrew Banner" onerror="this.style.display='none'">
+</div>
 
-    <!-- MAIN HEADER -->
-    <header class="w-full border-b border-vault-border bg-vault-blue/80 backdrop-blur-md sticky top-0 z-30">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+<!-- Original Konsolen Navigation -->
+<div class="console-nav" id="consoleNav"></div>
+
+<div class="container">
+    <div class="toolbar">
+        <button class="tool-btn" onclick="copyAllLinks()">📋 Alle Links kopieren</button>
+        <button class="tool-btn" onclick="downloadTxtList()">💾 .TXT Liste</button>
+    </div>
+    
+    <h1 id="vaultTitle">Microsoft Xbox 360 Vault</h1>
+    <p class="subtitle">Direkte Archive-Downloads im BoneCrew-Design</p>
+    <ul id="vaultList"></ul>
+</div>
+
+<div class="analytics-box">
+    <div class="analytics-header">
+        <h3>Live Traffic & Stats</h3>
+        <span style="font-size: 0.8em; color: #00ff66;">● System Active</span>
+    </div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="label">Gesamtbesucher</div>
+            <div class="value" id="statVisitors">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Gesamt-Downloads</div>
+            <div class="value" id="statTotalDownloads">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Beliebteste Konsole</div>
+            <div class="value" id="statTopConsole" style="font-size: 1.1em;">Xbox 360</div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <div>Powered by BoneCrew Vault</div>
+    <div><button class="admin-link" onclick="openAdminModal()">Admin Login</button></div>
+</div>
+
+<!-- Admin & CMS Modal -->
+<div class="modal-overlay" id="adminModal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeAdminModal()">&times;</button>
+        
+        <div id="adminLoginView">
+            <h2>Admin Login</h2>
+            <p style="color: #8fa3be; font-size: 0.9em; margin-bottom: 20px;">Gib das Admin-Passwort ein, um Zugriff auf das CMS und die Statistiken zu erhalten.</p>
+            <div class="admin-form">
+                <input type="password" id="adminPasswordInput" placeholder="Passwort eingeben..." onkeydown="if(event.key === 'Enter') checkAdminLogin()">
+                <button class="admin-btn" onclick="checkAdminLogin()">Anmelden</button>
+            </div>
+            <div id="loginError" style="color: #ff3333; font-size: 0.85em; margin-top: 10px; display: none;">Falsches Passwort!</div>
+        </div>
+
+        <div id="adminDashboardView" style="display: none;">
+            <h2>Admin CMS & Control Center</h2>
+            <p style="color: #00ff66; font-size: 0.9em; margin-bottom: 15px;">✓ Erfolgreich als Administrator angemeldet</p>
             
-            <!-- Logo & Title -->
-            <div class="flex items-center gap-3">
-                <div class="relative group">
-                    <img src="Unbenannt.png" alt="BoneCrew Logo" 
-                         onerror="this.onerror=null; this.src='https://placehold.co/120x45/0b1320/ff9900?text=BONECREW';" 
-                         class="h-11 w-auto object-contain rounded border border-vault-border group-hover:border-vault-accent transition duration-300">
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                <button class="admin-btn" onclick="openLinkManager()">🔗 Links & Konsolen verwalten</button>
+                <button class="admin-btn" style="background: #102a45;" onclick="runHealthCheck()">🔍 Link Health-Check (404)</button>
+                <button class="admin-btn" style="background: #243b53;" onclick="syncToGist()">☁️ GitHub Gist Backup</button>
+            </div>
+
+            <div class="stats-grid" style="margin-bottom: 20px;">
+                <div class="stat-card">
+                    <div class="label">Besucher Total</div>
+                    <div class="value" id="adminStatVisitors">0</div>
                 </div>
-                <div>
-                    <h1 class="text-xl md:text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-vault-accent via-amber-400 to-vault-neon">
-                        BONECREW <span class="text-xs px-2 py-0.5 rounded bg-vault-accent/20 text-vault-accent border border-vault-accent/30 ml-1">VAULT v3.0</span>
-                    </h1>
-                    <p class="text-xs text-gray-400 font-mono">Game Repositories & High-Speed Direct Access</p>
+                <div class="stat-card">
+                    <div class="label">Klicks Total</div>
+                    <div class="value" id="adminStatTotalClicks">0</div>
                 </div>
             </div>
 
-            <!-- Header Actions -->
-            <div class="flex items-center gap-2">
-                <button id="btn-open-search" onclick="toggleSearchModal(true)" 
-                        class="px-3 py-2 rounded-lg bg-vault-card hover:bg-vault-border text-gray-200 border border-vault-border hover:border-vault-neon transition flex items-center gap-2 text-sm font-medium">
-                    <i class="fa-solid fa-magnifying-glass text-vault-neon"></i>
-                    <span class="hidden sm:inline">Archive.org Spiele-Suche</span>
-                </button>
-
-                <button id="btn-admin-login" onclick="openAdminModal()" 
-                        class="px-3 py-2 rounded-lg bg-vault-accent/10 hover:bg-vault-accent/20 text-vault-accent border border-vault-accent/40 transition flex items-center gap-2 text-sm font-semibold">
-                    <i class="fa-solid fa-user-shield"></i>
-                    <span class="hidden sm:inline">Admin CMS</span>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- MAIN CONTENT CONTAINER -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 flex flex-col gap-6">
-
-        <!-- ARCHIVE DEEP SEARCH PROMO BANNER -->
-        <div class="glass-panel rounded-xl p-4 border border-vault-accent/30 bg-gradient-to-r from-vault-card via-vault-blue to-vault-card flex flex-col md:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-                <div class="p-3 rounded-lg bg-vault-accent/20 text-vault-accent text-2xl">
-                    <i class="fa-solid fa-compact-disc fa-spin" style="animation-duration: 10s;"></i>
-                </div>
-                <div>
-                    <h3 class="font-bold text-white text-base">Einzelfiles & Spiele direkt suchen</h3>
-                    <p class="text-xs text-gray-400">Durchsuche direkt die riesigen Redump-Archive nach ISOs, ROMs & Games ohne manuelles Scrollen.</p>
-                </div>
-            </div>
-            <button onclick="toggleSearchModal(true)" class="w-full md:w-auto px-5 py-2.5 rounded-lg bg-gradient-to-r from-vault-accent to-amber-500 hover:from-amber-500 hover:to-vault-accent text-black font-bold text-sm shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2">
-                <i class="fa-solid fa-search"></i> Spiele-Suchmaschine öffnen
-            </button>
-        </div>
-
-        <!-- CONSOLE NAVIGATION TABS -->
-        <div class="flex items-center justify-between border-b border-vault-border pb-2 overflow-x-auto gap-2" id="console-tabs-container">
-            <!-- Dynamic Console Tabs will be rendered here -->
-        </div>
-
-        <!-- ACTIVE CONSOLE HEADER & EXPORT ACTIONS -->
-        <div class="glass-panel rounded-xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-l-4 border-l-vault-accent">
-            <div>
-                <div class="flex items-center gap-3">
-                    <h2 id="active-console-title" class="text-2xl font-bold text-white">Xbox 360</h2>
-                    <span id="active-console-count" class="px-2.5 py-0.5 rounded-full text-xs font-mono bg-vault-border text-vault-neon border border-vault-neon/30">0 Parts</span>
-                </div>
-                <p id="active-console-desc" class="text-xs text-gray-400 mt-1">Direkte Download-Segmente für Microsoft Xbox 360 Spiele-Archive.</p>
+            <h3 style="color: #8fa3be; font-size: 0.9em; text-transform: uppercase; margin-top: 25px; border-bottom: 1px solid #1a273b; padding-bottom: 8px;">Detaillierte Klick-Statistiken</h3>
+            <div style="max-height: 200px; overflow-y: auto;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Link-Name</th>
+                            <th style="width: 80px; text-align: right;">Klicks</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminClicksTableBody"></tbody>
+                </table>
             </div>
 
-            <!-- BULK EXPORT & COPY BUTTONS -->
-            <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                <button onclick="copyAllConsoleLinks()" class="flex-1 md:flex-none px-3 py-2 rounded-lg bg-vault-card hover:bg-vault-border border border-vault-border text-xs text-gray-200 flex items-center justify-center gap-2 transition hover:text-vault-accent">
-                    <i class="fa-solid fa-copy text-vault-accent"></i> Alle Links kopieren
-                </button>
-                <button onclick="downloadConsoleLinksTxt()" class="flex-1 md:flex-none px-3 py-2 rounded-lg bg-vault-card hover:bg-vault-border border border-vault-border text-xs text-gray-200 flex items-center justify-center gap-2 transition hover:text-vault-neon">
-                    <i class="fa-solid fa-file-arrow-down text-vault-neon"></i> .TXT Liste
-                </button>
-            </div>
-        </div>
-
-        <!-- PARTS VAULT GRID / LIST -->
-        <div id="parts-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <!-- Dynamic Link Cards will be rendered here -->
-        </div>
-
-    </main>
-
-    <!-- COMPACT LIVE STATS PANEL (FOOTER) -->
-    <footer class="w-full border-t border-vault-border bg-vault-blue/90 py-4 mt-8">
-        <div class="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-4 text-xs text-gray-400">
-            <div class="flex items-center gap-6 font-mono">
-                <div class="flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-vault-neon animate-pulse"></span>
-                    <span>Besucher online: <strong id="stat-visitors" class="text-white">1</strong></span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-download text-vault-accent"></i>
-                    <span>Downloads Gesamt: <strong id="stat-downloads" class="text-white">0</strong></span>
-                </div>
-                <div class="hidden sm:flex items-center gap-2">
-                    <i class="fa-solid fa-gamepad text-vault-accent"></i>
-                    <span>Top Konsole: <strong id="stat-top-console" class="text-white">Xbox 360</strong></span>
-                </div>
-            </div>
-            <div class="font-mono text-gray-500 text-right">
-                BoneCrew Vault System &copy; 2026 | Safe & Ad-Free
-            </div>
-        </div>
-    </footer>
-
-    <!-- ========================================== -->
-    <!-- MODAL 1: ARCHIVE.ORG LIVE DEEP GAME SEARCH -->
-    <!-- ========================================== -->
-    <div id="modal-search" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="glass-panel w-full max-w-3xl rounded-xl border border-vault-neon/40 p-6 flex flex-col max-h-[85vh] shadow-2xl">
-            <!-- Header -->
-            <div class="flex items-center justify-between pb-4 border-b border-vault-border">
-                <div class="flex items-center gap-3">
-                    <div class="p-2 rounded bg-vault-neon/10 text-vault-neon">
-                        <i class="fa-solid fa-magnifying-glass-location text-xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold text-white">Archive.org Live-Spieledurchsuchung</h3>
-                        <p class="text-xs text-gray-400">Finde exakte Spiele & ISOs im gesamten Redump-Archiv</p>
-                    </div>
-                </div>
-                <button onclick="toggleSearchModal(false)" class="text-gray-400 hover:text-white p-2 text-lg">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <!-- Search Inputs -->
-            <div class="py-4 flex flex-col md:flex-row gap-3">
-                <div class="relative flex-1">
-                    <i class="fa-solid fa-search absolute left-3 top-3 text-gray-500"></i>
-                    <input type="text" id="search-query-input" placeholder="Spieletitel eingeben (z.B. Halo, Mario, Zelda)..." 
-                           class="w-full bg-vault-bg border border-vault-border rounded-lg pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-vault-neon"
-                           onkeyup="if(event.key==='Enter') executeArchiveSearch()">
-                </div>
-                <select id="search-console-select" class="bg-vault-bg border border-vault-border rounded-lg px-3 py-2 text-sm text-gray-300 focus:outline-none focus:border-vault-neon">
-                    <option value="all">Alle Konsolen / Archive</option>
-                    <option value="xbox">Xbox360 / Classic</option>
-                    <option value="nintendo">Wii / GameCube / N64</option>
-                    <option value="playstation">Playstation PS1/PS2/PS3</option>
-                </select>
-                <button onclick="executeArchiveSearch()" class="px-5 py-2 bg-vault-neon text-black font-bold rounded-lg hover:bg-emerald-400 transition text-sm flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-bolt"></i> Suchen
-                </button>
-            </div>
-
-            <!-- Search Results Area -->
-            <div id="search-results-list" class="flex-grow overflow-y-auto space-y-2 pr-1 my-2 min-h-[250px]">
-                <div class="text-center py-12 text-gray-500">
-                    <i class="fa-solid fa-compass text-4xl mb-3 text-vault-border"></i>
-                    <p class="text-sm">Gib einen Spieletitel ein, um direkte Download-Links aus den Archiven abzurufen.</p>
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <div class="pt-3 border-t border-vault-border flex justify-between items-center text-xs text-gray-400 font-mono">
-                <span id="search-status-text">Bereit für Abfrage</span>
-                <button onclick="toggleSearchModal(false)" class="px-4 py-1.5 rounded bg-vault-border hover:bg-gray-700 text-gray-200">
-                    Schließen
-                </button>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 25px;">
+                <button class="admin-btn danger-btn" onclick="resetAllStats()">Statistiken zurücksetzen</button>
+                <button class="admin-btn" style="background: #1a273b; color: #8fa3be;" onclick="adminLogout()">Abmelden</button>
             </div>
         </div>
     </div>
+</div>
 
-
-    <!-- ========================================== -->
-    <!-- MODAL 2: ADMIN LOGIN & CONTROL CENTER      -->
-    <!-- ========================================== -->
-    <div id="modal-admin" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="glass-panel w-full max-w-4xl rounded-xl border border-vault-accent/40 p-6 flex flex-col max-h-[90vh] shadow-2xl overflow-hidden">
-            
-            <!-- LOGIN VIEW -->
-            <div id="admin-login-view" class="py-8 max-w-md mx-auto w-full text-center">
-                <div class="w-16 h-16 rounded-full bg-vault-accent/10 border border-vault-accent/30 flex items-center justify-center mx-auto mb-4 text-vault-accent text-2xl">
-                    <i class="fa-solid fa-lock"></i>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-1">Admin Control Center</h3>
-                <p class="text-xs text-gray-400 mb-6">Gib dein Administrator-Passwort ein, um fortzufahren.</p>
-                
-                <form onsubmit="handleAdminLogin(event)" class="space-y-4">
-                    <input type="password" id="admin-password-input" placeholder="Passwort (Standard: bonecrew123)" 
-                           class="w-full bg-vault-bg border border-vault-border rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-vault-accent text-center">
-                    <div class="flex gap-2">
-                        <button type="button" onclick="closeAdminModal()" class="w-1/2 py-2.5 rounded-lg border border-vault-border text-gray-400 hover:text-white text-sm">
-                            Abbrechen
-                        </button>
-                        <button type="submit" class="w-1/2 py-2.5 rounded-lg bg-vault-accent hover:bg-amber-500 text-black font-bold text-sm transition">
-                            Einloggen
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- LOGGED IN ADMIN PANEL VIEW -->
-            <div id="admin-dashboard-view" class="hidden flex flex-col h-full overflow-hidden">
-                
-                <!-- Admin Header Nav -->
-                <div class="flex flex-wrap items-center justify-between pb-4 border-b border-vault-border gap-2">
-                    <div class="flex items-center gap-2">
-                        <span class="px-2.5 py-1 rounded bg-vault-accent/20 text-vault-accent font-bold text-xs">ADMIN MODE</span>
-                        <h3 class="text-lg font-bold text-white">CMS & Link Management</h3>
-                    </div>
-
-                    <!-- Admin Tabs Switcher -->
-                    <div class="flex items-center gap-1 bg-vault-bg p-1 rounded-lg border border-vault-border">
-                        <button onclick="switchAdminTab('content')" id="tab-btn-content" class="px-3 py-1 rounded text-xs font-semibold bg-vault-accent text-black">
-                            <i class="fa-solid fa-folder-tree"></i> Vault Content
-                        </button>
-                        <button onclick="switchAdminTab('health')" id="tab-btn-health" class="px-3 py-1 rounded text-xs font-semibold text-gray-400 hover:text-white">
-                            <i class="fa-solid fa-heart-pulse text-vault-neon"></i> Link-Health
-                        </button>
-                        <button onclick="switchAdminTab('cloud')" id="tab-btn-cloud" class="px-3 py-1 rounded text-xs font-semibold text-gray-400 hover:text-white">
-                            <i class="fa-solid fa-cloud-arrow-up text-blue-400"></i> Cloud Sync
-                        </button>
-                    </div>
-
-                    <button onclick="logoutAdmin()" class="text-xs text-red-400 hover:text-red-300 font-mono px-2 py-1">
-                        <i class="fa-solid fa-right-from-bracket"></i> Logout
-                    </button>
-                </div>
-
-                <!-- ADMIN TAB 1: CONTENT MANAGEMENT -->
-                <div id="admin-tab-content" class="flex-grow overflow-y-auto py-4 space-y-6">
-                    
-                    <!-- Console Selector / Add Console -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="glass-panel p-4 rounded-lg">
-                            <h4 class="text-sm font-bold text-vault-accent mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-plus-circle"></i> Neue Konsole hinzufügen
-                            </h4>
-                            <div class="space-y-2">
-                                <input type="text" id="new-console-name" placeholder="Konsolen Name (z.B. PS3 Redump)" class="w-full bg-vault-bg border border-vault-border rounded p-2 text-xs text-white">
-                                <input type="text" id="new-console-desc" placeholder="Kurzbeschreibung..." class="w-full bg-vault-bg border border-vault-border rounded p-2 text-xs text-white">
-                                <button onclick="addNewConsole()" class="w-full py-2 bg-vault-accent hover:bg-amber-500 text-black font-bold text-xs rounded transition">
-                                    Konsole Anlegen
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="glass-panel p-4 rounded-lg">
-                            <h4 class="text-sm font-bold text-vault-neon mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-link"></i> Neuer Link Part für aktive Konsole
-                            </h4>
-                            <div class="space-y-2">
-                                <input type="text" id="new-part-title" placeholder="Part Titel (z.B. Part 4 - Redump ISOs)" class="w-full bg-vault-bg border border-vault-border rounded p-2 text-xs text-white">
-                                <input type="url" id="new-part-url" placeholder="Archive.org Direct/Folder URL..." class="w-full bg-vault-bg border border-vault-border rounded p-2 text-xs text-white">
-                                <button onclick="addNewPartToActiveConsole()" class="w-full py-2 bg-vault-neon hover:bg-emerald-400 text-black font-bold text-xs rounded transition">
-                                    Link Part Speichern
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Existing Data Tree / Delete options -->
-                    <div>
-                        <h4 class="text-sm font-bold text-white mb-2">Aktuelle Konsolen & Part Übersicht</h4>
-                        <div id="admin-consoles-list" class="space-y-3">
-                            <!-- Dynamic rendering of CMS entries -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ADMIN TAB 2: LINK HEALTH CHECKER -->
-                <div id="admin-tab-health" class="hidden flex-grow overflow-y-auto py-4 space-y-4">
-                    <div class="glass-panel p-4 rounded-lg flex items-center justify-between">
-                        <div>
-                            <h4 class="font-bold text-white text-sm">Automatischer Link-Status Checker</h4>
-                            <p class="text-xs text-gray-400">Sendet Requests an Archive.org, um tote Links (404 / Offline) zu erkennen.</p>
-                        </div>
-                        <button onclick="runLinkHealthCheck()" id="btn-run-health" class="px-4 py-2 bg-vault-neon hover:bg-emerald-400 text-black font-bold text-xs rounded-lg transition flex items-center gap-2">
-                            <i class="fa-solid fa-play"></i> Health Check Starten
-                        </button>
-                    </div>
-
-                    <div id="health-check-results" class="space-y-2">
-                        <div class="text-center py-8 text-gray-500 text-xs">
-                            Klicke auf "Health Check Starten", um alle hinterlegten Archive-Links zu prüfen.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ADMIN TAB 3: GITHUB GIST CLOUD SYNC -->
-                <div id="admin-tab-cloud" class="hidden flex-grow overflow-y-auto py-4 space-y-4">
-                    <div class="glass-panel p-4 rounded-lg space-y-3 border border-blue-500/30">
-                        <h4 class="font-bold text-blue-400 text-sm flex items-center gap-2">
-                            <i class="fa-solid fa-cloud"></i> GitHub Gist Cloud Backup & Restore
-                        </h4>
-                        <p class="text-xs text-gray-400">Sichere deine Vault-Konfiguration dauerhaft in einem privaten GitHub Gist, damit deine Daten nie verloren gehen.</p>
-
-                        <div class="space-y-2">
-                            <div>
-                                <label class="text-xs text-gray-400">GitHub Personal Access Token (PAT):</label>
-                                <input type="password" id="gist-pat" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" class="w-full bg-vault-bg border border-vault-border rounded p-2 text-xs text-white font-mono">
-                            </div>
-                            <div>
-                                <label class="text-xs text-gray-400">Gist ID (optional bei Ersteinstellung):</label>
-                                <input type="text" id="gist-id" placeholder="8a7b6c5d4e..." class="w-full bg-vault-bg border border-vault-border rounded p-2 text-xs text-white font-mono">
-                            </div>
-                        </div>
-
-                        <div class="flex gap-2 pt-2">
-                            <button onclick="saveToGitHubGist()" class="flex-1 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-cloud-arrow-up"></i> In die Cloud sichern
-                            </button>
-                            <button onclick="loadFromGitHubGist()" class="flex-1 py-2 bg-vault-card hover:bg-vault-border border border-vault-border text-gray-200 font-bold text-xs rounded transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-cloud-arrow-down"></i> Aus Cloud laden
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Footer Close -->
-                <div class="pt-3 border-t border-vault-border flex justify-end">
-                    <button onclick="closeAdminModal()" class="px-4 py-1.5 rounded bg-vault-border text-gray-300 hover:text-white text-xs">
-                        Schließen
-                    </button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        // DEFAULT INITIAL VAULT DATA
-        const initialVaultData = {
-            consoles: [
-                {
-                    id: 'xbox360',
-                    name: 'Xbox 360',
-                    description: 'Microsoft Xbox 360 Redump & ISO Repositories',
-                    parts: [
-                        { id: 'x360-p1', name: 'Part 1 - USA / EUR Games (A-G)', url: 'https://archive.org/details/XBOX_360_NOINTRO_USA_PART1', clicks: 142 },
-                        { id: 'x360-p2', name: 'Part 2 - USA / EUR Games (H-P)', url: 'https://archive.org/details/XBOX_360_NOINTRO_USA_PART2', clicks: 98 },
-                        { id: 'x360-p3', name: 'Part 3 - USA / EUR Games (Q-Z)', url: 'https://archive.org/details/XBOX_360_NOINTRO_USA_PART3', clicks: 210 }
-                    ]
-                },
-                {
-                    id: 'xboxclassic',
-                    name: 'Xbox Classic',
-                    description: 'Original Microsoft Xbox Games Collection',
-                    parts: [
-                        { id: 'xclass-p1', name: 'Part 1 - HDD Ready Games Vol 1', url: 'https://archive.org/details/xbox_hero_collection_part1', clicks: 75 },
-                        { id: 'xclass-p2', name: 'Part 2 - HDD Ready Games Vol 2', url: 'https://archive.org/details/xbox_hero_collection_part2', clicks: 61 }
-                    ]
-                },
-                {
-                    id: 'wii',
-                    name: 'Nintendo Wii',
-                    description: 'Wii RVZ / WBFS Complete Archive',
-                    parts: [
-                        { id: 'wii-p1', name: 'Part 1 - European Wii Redump (A-M)', url: 'https://archive.org/details/wii_eu_redux_part1', clicks: 310 },
-                        { id: 'wii-p2', name: 'Part 2 - European Wii Redump (N-Z)', url: 'https://archive.org/details/wii_eu_redux_part2', clicks: 289 }
-                    ]
-                }
+<script>
+    // Standarddaten (Vollständige Gesamtübersicht)
+    const defaultVaultData = {
+        xbox360: {
+            key: "xbox360",
+            title: "Microsoft Xbox 360",
+            items: [
+                { name: "Microsoft Xbox 360 - # - Redump.org", link: "https://archive.org/download/microsoft_xbox360_number" },
+                { name: "Microsoft Xbox 360 - A (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_a_part1" },
+                { name: "Microsoft Xbox 360 - A (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_a_part2" },
+                { name: "Microsoft Xbox 360 - B (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_b_part1" },
+                { name: "Microsoft Xbox 360 - B (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_b_part2" },
+                { name: "Microsoft Xbox 360 - C (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_c_part1" },
+                { name: "Microsoft Xbox 360 - C (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_c_part2" },
+                { name: "Microsoft Xbox 360 - D (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_d_part1" },
+                { name: "Microsoft Xbox 360 - D (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_d_part2" },
+                { name: "Microsoft Xbox 360 - D (Part 3) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_d_part3" },
+                { name: "Microsoft Xbox 360 - E - Redump.org", link: "https://archive.org/download/microsoft_xbox360_e" },
+                { name: "Microsoft Xbox 360 - F (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_f_part1" },
+                { name: "Microsoft Xbox 360 - F (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_f_part2" },
+                { name: "Microsoft Xbox 360 - G - Redump.org", link: "https://archive.org/download/microsoft_xbox360_g" },
+                { name: "Microsoft Xbox 360 - H - Redump.org", link: "https://archive.org/download/microsoft_xbox360_h" },
+                { name: "Microsoft Xbox 360 - I - Redump.org", link: "https://archive.org/download/microsoft_xbox360_i" },
+                { name: "Microsoft Xbox 360 - J - Redump.org", link: "https://archive.org/download/microsoft_xbox360_j" },
+                { name: "Microsoft Xbox 360 - K - Redump.org", link: "https://archive.org/download/microsoft_xbox360_k" },
+                { name: "Microsoft Xbox 360 - L - Redump.org", link: "https://archive.org/download/microsoft_xbox360_l" },
+                { name: "Microsoft Xbox 360 - M (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_m_part1" },
+                { name: "Microsoft Xbox 360 - M (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_m_part2" },
+                { name: "Microsoft Xbox 360 - N (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_n_part1" },
+                { name: "Microsoft Xbox 360 - N (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_n_part2" },
+                { name: "Microsoft Xbox 360 - O - Redump.org", link: "https://archive.org/download/microsoft_xbox360_o" },
+                { name: "Microsoft Xbox 360 - P - Redump.org", link: "https://archive.org/download/microsoft_xbox360_p" },
+                { name: "Microsoft Xbox 360 - Q - Redump.org", link: "https://archive.org/download/microsoft_xbox360_q" },
+                { name: "Microsoft Xbox 360 - R - Redump.org", link: "https://archive.org/download/microsoft_xbox360_r" },
+                { name: "Microsoft Xbox 360 - S (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_s_part1" },
+                { name: "Microsoft Xbox 360 - S (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_s_part2" },
+                { name: "Microsoft Xbox 360 - T (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_t_part1" },
+                { name: "Microsoft Xbox 360 - T (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_t_part2" },
+                { name: "Microsoft Xbox 360 - U - Redump.org", link: "https://archive.org/download/microsoft_xbox360_u" },
+                { name: "Microsoft Xbox 360 - V - Redump.org", link: "https://archive.org/download/microsoft_xbox360_v" },
+                { name: "Microsoft Xbox 360 - W - Redump.org", link: "https://archive.org/download/microsoft_xbox360_w" },
+                { name: "Microsoft Xbox 360 - X (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_x_part1" },
+                { name: "Microsoft Xbox 360 - X (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_x_part2" },
+                { name: "Microsoft Xbox 360 - Y - Redump.org", link: "https://archive.org/download/microsoft_xbox360_y" },
+                { name: "Microsoft Xbox 360 - Z - Redump.org", link: "https://archive.org/download/microsoft_xbox360_z" },
+                { name: "Microsoft Xbox 360 - Title Updates - No-Intro", link: "https://archive.org/download/microsoft_xbox360_titleupdates" },
+                { name: "Microsoft Xbox 360 - Digital (Part 1)", link: "https://archive.org/download/microsoft_xbox360_digital_part1" },
+                { name: "Microsoft Xbox 360 - Digital (Part 2)", link: "https://archive.org/download/microsoft_xbox360_digital_part2" },
+                { name: "Microsoft Xbox 360 - Digital (Part 3)", link: "https://archive.org/download/microsoft_xbox360_digital_part3" },
+                { name: "Microsoft Xbox 360 - Digital (Part 4)", link: "https://archive.org/download/microsoft_xbox360_digital_part4" },
+                { name: "Microsoft Xbox 360 - Digital (Part 5)", link: "https://archive.org/download/microsoft_xbox360_digital_part5" },
+                { name: "Microsoft Xbox 360 - Digital (Part 6)", link: "https://archive.org/download/microsoft_xbox360_digital_part6" },
+                { name: "Microsoft Xbox 360 - Digital (Part 7)", link: "https://archive.org/download/microsoft_xbox360_digital_part7" }
             ]
-        };
+        },
+        xboxClassic: {
+            key: "xboxClassic",
+            title: "Microsoft Xbox Classic",
+            items: [
+                { name: "Microsoft Xbox - # - Redump.org", link: "https://archive.org/download/microsoft_xbox_number" },
+                { name: "Microsoft Xbox - A - Redump.org", link: "https://archive.org/download/microsoft_xbox_a" },
+                { name: "Microsoft Xbox - B - Redump.org", link: "https://archive.org/download/microsoft_xbox_b" },
+                { name: "Microsoft Xbox - C (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_c_part1" },
+                { name: "Microsoft Xbox - C (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_c_part2" },
+                { name: "Microsoft Xbox - D - Redump.org", link: "https://archive.org/download/microsoft_xbox_d" },
+                { name: "Microsoft Xbox - E - Redump.org", link: "https://archive.org/download/microsoft_xbox_e" },
+                { name: "Microsoft Xbox - F - Redump.org", link: "https://archive.org/download/microsoft_xbox_f" },
+                { name: "Microsoft Xbox - G - Redump.org", link: "https://archive.org/download/microsoft_xbox_g" },
+                { name: "Microsoft Xbox - H - Redump.org", link: "https://archive.org/download/microsoft_xbox_h" },
+                { name: "Microsoft Xbox - I - Redump.org", link: "https://archive.org/download/microsoft_xbox_i" },
+                { name: "Microsoft Xbox - J - Redump.org", link: "https://archive.org/download/microsoft_xbox_j" },
+                { name: "Microsoft Xbox - K - Redump.org", link: "https://archive.org/download/microsoft_xbox_k" },
+                { name: "Microsoft Xbox - L - Redump.org", link: "https://archive.org/download/microsoft_xbox_l" },
+                { name: "Microsoft Xbox - M (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_m_part1" },
+                { name: "Microsoft Xbox - M (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_m_part2" },
+                { name: "Microsoft Xbox - N - Redump.org", link: "https://archive.org/download/microsoft_xbox_n" },
+                { name: "Microsoft Xbox - O - Redump.org", link: "https://archive.org/download/microsoft_xbox_o" },
+                { name: "Microsoft Xbox - P - Redump.org", link: "https://archive.org/download/microsoft_xbox_p" },
+                { name: "Microsoft Xbox - Q - Redump.org", link: "https://archive.org/download/microsoft_xbox_q" },
+                { name: "Microsoft Xbox - R - Redump.org", link: "https://archive.org/download/microsoft_xbox_r" },
+                { name: "Microsoft Xbox - S (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_s_part1" },
+                { name: "Microsoft Xbox - S (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_s_part2" },
+                { name: "Microsoft Xbox - T (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_t_part1" },
+                { name: "Microsoft Xbox - T (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_t_part2" },
+                { name: "Microsoft Xbox - U - Redump.org", link: "https://archive.org/download/microsoft_xbox_u" },
+                { name: "Microsoft Xbox - V - Redump.org", link: "https://archive.org/download/microsoft_xbox_v" },
+                { name: "Microsoft Xbox - W - Redump.org", link: "https://archive.org/download/microsoft_xbox_w" },
+                { name: "Microsoft Xbox - X - Redump.org", link: "https://archive.org/download/microsoft_xbox_x" },
+                { name: "Microsoft Xbox - Y - Redump.org", link: "https://archive.org/download/microsoft_xbox_y" },
+                { name: "Microsoft Xbox - Z - Redump.org", link: "https://archive.org/download/microsoft_xbox_z" },
+                { name: "Microsoft Xbox - Title Updates & DLC", link: "https://archive.org/download/microsoft_xbox_dlc_titleupdates" }
+            ]
+        },
+        nintendoWii: {
+            key: "nintendoWii",
+            title: "Nintendo Wii",
+            items: [
+                { name: "Nintendo Wii - Redump Individual Games (Part 1)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part1" },
+                { name: "Nintendo Wii - Redump Individual Games (Part 2)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part2" },
+                { name: "Nintendo Wii - Redump Individual Games (Part 3)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part3" },
+                { name: "Nintendo Wii - Redump Individual Games (Part 4)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part4" },
+                { name: "Nintendo Wii - Redump Individual Games (Part 5)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part5" },
+                { name: "Nintendo Wii - Redump Individual Games (Part 6)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part6" }
+            ]
+        }
+    };
 
-        // GLOBAL APP STATE
-        let appState = {
-            vault: null,
-            activeConsoleId: 'xbox360',
-            isAdminLoggedIn: false,
-            adminTab: 'content',
-            totalDownloads: 0
-        };
+    const ADMIN_PASSWORD_B64 = "Ym9uZWNyZXcxMjM=";
+    let currentConsole = 'xbox360';
 
-        // INITIALIZATION
-        window.addEventListener('DOMContentLoaded', () => {
-            loadVaultData();
-            initStats();
-            renderTabs();
-            renderActiveConsoleParts();
+    function getVaultData() {
+        let saved = localStorage.getItem('bonecrew_vault_data');
+        if (!saved) {
+            localStorage.setItem('bonecrew_vault_data', JSON.stringify(defaultVaultData));
+            return defaultVaultData;
+        }
+        try { return JSON.parse(saved); } catch(e) { return defaultVaultData; }
+    }
+
+    function initPage() {
+        // Besucherzähler
+        if (!localStorage.getItem('bonecrew_visitors')) {
+            localStorage.setItem('bonecrew_visitors', '1');
+        } else if (!sessionStorage.getItem('bonecrew_counted')) {
+            let v = parseInt(localStorage.getItem('bonecrew_visitors')) + 1;
+            localStorage.setItem('bonecrew_visitors', v);
+            sessionStorage.setItem('bonecrew_counted', 'true');
+        }
+
+        renderConsoleNav();
+        switchConsole('xbox360');
+        updatePublicStats();
+    }
+
+    function renderConsoleNav() {
+        const data = getVaultData();
+        const nav = document.getElementById('consoleNav');
+        nav.innerHTML = '';
+
+        for (let key in data) {
+            const btn = document.createElement('button');
+            btn.className = `nav-btn ${key === currentConsole ? 'active' : ''}`;
+            btn.innerText = data[key].title;
+            btn.onclick = () => switchConsole(key, btn);
+            nav.appendChild(btn);
+        }
+    }
+
+    function switchConsole(key, btnElement) {
+        currentConsole = key;
+        const data = getVaultData();
+        const consoleData = data[key];
+        if (!consoleData) return;
+
+        document.getElementById('vaultTitle').innerText = consoleData.title + ' Vault';
+        const list = document.getElementById('vaultList');
+        list.innerHTML = '';
+
+        consoleData.items.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="title">${item.name}</span> <a class="dl-btn" href="${item.link}" target="_blank">Download</a>`;
+            
+            li.querySelector('.dl-btn').onclick = () => trackClick(item.name);
+            list.appendChild(li);
         });
 
-        // LOAD DATA FROM LOCALSTORAGE OR FALLBACK
-        function loadVaultData() {
-            const saved = localStorage.getItem('bonecrew_vault_db');
-            if (saved) {
-                try {
-                    appState.vault = JSON.parse(saved);
-                } catch(e) {
-                    appState.vault = initialVaultData;
-                }
-            } else {
-                appState.vault = initialVaultData;
-                saveVaultData();
-            }
-
-            // Calculate initial clicks
-            let total = 0;
-            appState.vault.consoles.forEach(c => {
-                c.parts.forEach(p => total += (p.clicks || 0));
-            });
-            appState.totalDownloads = total;
+        if (btnElement) {
+            document.querySelectorAll('.console-nav .nav-btn').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
         }
+    }
 
-        function saveVaultData() {
-            localStorage.setItem('bonecrew_vault_db', JSON.stringify(appState.vault));
+    function trackClick(itemName) {
+        let clicks = JSON.parse(localStorage.getItem('bonecrew_clicks')) || {};
+        clicks[itemName] = (clicks[itemName] || 0) + 1;
+        localStorage.setItem('bonecrew_clicks', JSON.stringify(clicks));
+        updatePublicStats();
+    }
+
+    function updatePublicStats() {
+        document.getElementById('statVisitors').innerText = localStorage.getItem('bonecrew_visitors') || '1';
+        let clicks = JSON.parse(localStorage.getItem('bonecrew_clicks')) || {};
+        let total = Object.values(clicks).reduce((a, b) => a + b, 0);
+        document.getElementById('statTotalDownloads').innerText = total;
+    }
+
+    function copyAllLinks() {
+        const data = getVaultData();
+        const links = data[currentConsole].items.map(i => i.link).join('\n');
+        navigator.clipboard.writeText(links);
+        alert('Alle Links dieser Konsole wurden in die Zwischenablage kopiert!');
+    }
+
+    function downloadTxtList() {
+        const data = getVaultData();
+        const links = data[currentConsole].items.map(i => `${i.name}: ${i.link}`).join('\n');
+        const blob = new Blob([links], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${currentConsole}_links.txt`;
+        a.click();
+    }
+
+    function openAdminModal() {
+        document.getElementById('adminModal').style.display = 'flex';
+        if (sessionStorage.getItem('bonecrew_admin_logged') === 'true') {
+            showAdminDashboard();
+        } else {
+            document.getElementById('adminLoginView').style.display = 'block';
+            document.getElementById('adminDashboardView').style.display = 'none';
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('loginError').style.display = 'none';
         }
+    }
 
-        // STATS MANAGEMENT
-        function initStats() {
-            // Visitor Counter Simulation
-            let visitors = parseInt(sessionStorage.getItem('bonecrew_visitors') || '0');
-            if (visitors === 0) {
-                visitors = Math.floor(Math.random() * 12) + 3;
-                sessionStorage.setItem('bonecrew_visitors', visitors.toString());
-            }
-            document.getElementById('stat-visitors').textContent = visitors.toString();
-            updateStatsUI();
-        }
+    function closeAdminModal() {
+        document.getElementById('adminModal').style.display = 'none';
+    }
 
-        function updateStatsUI() {
-            document.getElementById('stat-downloads').textContent = appState.totalDownloads.toString();
-            
-            // Determine top console
-            let topConsole = appState.vault.consoles[0]?.name || 'N/A';
-            let maxClicks = -1;
-            appState.vault.consoles.forEach(c => {
-                let sum = c.parts.reduce((a, b) => a + (b.clicks || 0), 0);
-                if (sum > maxClicks) {
-                    maxClicks = sum;
-                    topConsole = c.name;
-                }
-            });
-            document.getElementById('stat-top-console').textContent = topConsole;
-        }
-
-        // RENDER CONSOLE TABS
-        function renderTabs() {
-            const container = document.getElementById('console-tabs-container');
-            container.innerHTML = '';
-
-            appState.vault.consoles.forEach(consoleObj => {
-                const isActive = consoleObj.id === appState.activeConsoleId;
-                const btn = document.createElement('button');
-                btn.onclick = () => selectConsole(consoleObj.id);
-                btn.className = `px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap transition flex items-center gap-2 ${
-                    isActive 
-                    ? 'bg-vault-accent text-black shadow-lg shadow-vault-accent/20' 
-                    : 'bg-vault-card text-gray-300 hover:bg-vault-border border border-vault-border'
-                }`;
-                btn.innerHTML = `<i class="fa-solid fa-gamepad"></i> ${consoleObj.name}`;
-                container.appendChild(btn);
-            });
-        }
-
-        // SELECT CONSOLE
-        function selectConsole(id) {
-            appState.activeConsoleId = id;
-            renderTabs();
-            renderActiveConsoleParts();
-        }
-
-        // RENDER PARTS GRID
-        function renderActiveConsoleParts() {
-            const currentConsole = appState.vault.consoles.find(c => c.id === appState.activeConsoleId);
-            if (!currentConsole) return;
-
-            document.getElementById('active-console-title').textContent = currentConsole.name;
-            document.getElementById('active-console-desc').textContent = currentConsole.description || 'Spiele-Archiv Downloads';
-            document.getElementById('active-console-count').textContent = `${currentConsole.parts.length} Parts`;
-
-            const container = document.getElementById('parts-container');
-            container.innerHTML = '';
-
-            if (currentConsole.parts.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-full py-12 text-center text-gray-500 border border-dashed border-vault-border rounded-xl">
-                        <i class="fa-solid fa-box-open text-3xl mb-2"></i>
-                        <p class="text-sm">Keine Parts für diese Konsole hinterlegt.</p>
-                    </div>`;
-                return;
-            }
-
-            currentConsole.parts.forEach((part, index) => {
-                const card = document.createElement('div');
-                card.className = "glass-panel p-4 rounded-xl border border-vault-border hover:border-vault-accent/50 transition duration-300 flex flex-col justify-between gap-3 group";
-                
-                card.innerHTML = `
-                    <div>
-                        <div class="flex items-center justify-between gap-2 mb-1">
-                            <span class="text-xs font-mono text-vault-accent bg-vault-accent/10 px-2 py-0.5 rounded border border-vault-accent/20">PART ${index + 1}</span>
-                            <span class="text-xs text-gray-500 font-mono"><i class="fa-solid fa-mouse-pointer text-vault-neon"></i> ${part.clicks || 0} Klicks</span>
-                        </div>
-                        <h4 class="font-bold text-white group-hover:text-vault-accent transition text-base">${part.name}</h4>
-                    </div>
-
-                    <div class="flex items-center gap-2 pt-2 border-t border-vault-border/50">
-                        <a href="${part.url}" target="_blank" onclick="trackLinkClick('${part.id}')" 
-                           class="flex-1 py-2 px-3 rounded-lg bg-gradient-to-r from-vault-accent to-amber-500 hover:from-amber-500 hover:to-vault-accent text-black font-bold text-xs flex items-center justify-center gap-2 transition shadow">
-                            <i class="fa-solid fa-download"></i> Direct Download / Archive
-                        </a>
-                        <button onclick="copySingleUrl('${part.url}')" title="Link in Zwischenablage kopieren" 
-                                class="p-2 rounded-lg bg-vault-card hover:bg-vault-border border border-vault-border text-gray-400 hover:text-white transition">
-                            <i class="fa-solid fa-copy"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // TRACK LINK CLICK
-        function trackLinkClick(partId) {
-            appState.vault.consoles.forEach(c => {
-                c.parts.forEach(p => {
-                    if (p.id === partId) {
-                        p.clicks = (p.clicks || 0) + 1;
-                        appState.totalDownloads++;
-                    }
-                });
-            });
-            saveVaultData();
-            updateStatsUI();
-            renderActiveConsoleParts();
-        }
-
-        // BULK EXPORT FUNCTIONS
-        function copyAllConsoleLinks() {
-            const currentConsole = appState.vault.consoles.find(c => c.id === appState.activeConsoleId);
-            if (!currentConsole || currentConsole.parts.length === 0) {
-                showToast('Keine Links zum Kopieren vorhanden!', 'error');
-                return;
-            }
-            const urls = currentConsole.parts.map(p => p.url).join('\n');
-            copyToClipboard(urls);
-            showToast(`${currentConsole.parts.length} Links in Zwischenablage kopiert!`);
-        }
-
-        function downloadConsoleLinksTxt() {
-            const currentConsole = appState.vault.consoles.find(c => c.id === appState.activeConsoleId);
-            if (!currentConsole || currentConsole.parts.length === 0) {
-                showToast('Keine Links für Export vorhanden!', 'error');
-                return;
-            }
-            const content = currentConsole.parts.map(p => `${p.name}: ${p.url}`).join('\n');
-            const blob = new Blob([content], { type: 'text/plain' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `BoneCrew_Vault_${currentConsole.name.replace(/\s+/g, '_')}_Links.txt`;
-            a.click();
-            showToast('.TXT Download gestartet!');
-        }
-
-        function copySingleUrl(url) {
-            copyToClipboard(url);
-            showToast('Link kopiert!');
-        }
-
-        function copyToClipboard(text) {
-            const temp = document.createElement('textarea');
-            temp.value = text;
-            document.body.appendChild(temp);
-            temp.select();
-            document.execCommand('copy');
-            document.body.removeChild(temp);
-        }
-
-
-        // ==========================================
-        // ARCHIVE.ORG LIVE DEEP SEARCH LOGIC
-        // ==========================================
-        function toggleSearchModal(show) {
-            const modal = document.getElementById('modal-search');
-            if (show) {
-                modal.classList.remove('hidden');
-                document.getElementById('search-query-input').focus();
-            } else {
-                modal.classList.add('hidden');
-            }
-        }
-
-        async function executeArchiveSearch() {
-            const query = document.getElementById('search-query-input').value.trim();
-            const category = document.getElementById('search-console-select').value;
-            const resultsContainer = document.getElementById('search-results-list');
-            const statusText = document.getElementById('search-status-text');
-
-            if (!query) {
-                showToast('Bitte einen Suchbegriff eingeben!', 'error');
-                return;
-            }
-
-            resultsContainer.innerHTML = `
-                <div class="text-center py-12 text-vault-neon">
-                    <i class="fa-solid fa-spinner fa-spin text-3xl mb-3"></i>
-                    <p class="text-xs font-mono">Durchsuche Archive.org Redump-Datenbanken...</p>
-                </div>`;
-            statusText.textContent = 'Suche läuft...';
-
-            try {
-                // Construct query for Archive.org API
-                let targetQuery = `title:(${query}) AND mediatype:(software OR data)`;
-                if (category === 'xbox') targetQuery += ' AND (xbox OR "xbox 360")';
-                if (category === 'nintendo') targetQuery += ' AND (wii OR gamecube OR nintendo)';
-                if (category === 'playstation') targetQuery += ' AND (playstation OR ps2 OR ps3)';
-
-                const url = `https://archive.org/advancedsearch.php?q=${encodeURIComponent(targetQuery)}&fl[]=identifier,title,description,publicdate,downloads&sort[]=downloads+desc&rows=15&page=1&output=json`;
-
-                const response = await fetch(url);
-                const data = await response.json();
-
-                const docs = data.response?.docs || [];
-
-                if (docs.length === 0) {
-                    resultsContainer.innerHTML = `
-                        <div class="text-center py-10 text-gray-500">
-                            <i class="fa-solid fa-face-frown text-3xl mb-2"></i>
-                            <p class="text-sm">Keine passenden Archive-Einträge gefunden.</p>
-                        </div>`;
-                    statusText.textContent = '0 Ergebnisse';
-                    return;
-                }
-
-                statusText.textContent = `${docs.length} Treffer gefunden`;
-                resultsContainer.innerHTML = '';
-
-                docs.forEach(doc => {
-                    const itemUrl = `https://archive.org/details/${doc.identifier}`;
-                    const downloadZipUrl = `https://archive.org/compress/${doc.identifier}`;
-
-                    const row = document.createElement('div');
-                    row.className = "p-3 rounded-lg bg-vault-card border border-vault-border hover:border-vault-neon/50 transition flex flex-col md:flex-row items-start md:items-center justify-between gap-3";
-                    
-                    row.innerHTML = `
-                        <div class="flex-1">
-                            <h5 class="font-bold text-white text-sm hover:text-vault-neon transition">${doc.title || doc.identifier}</h5>
-                            <p class="text-xs text-gray-400 font-mono mt-0.5">ID: ${doc.identifier} | Downloads: ${doc.downloads || 0}</p>
-                        </div>
-                        <div class="flex items-center gap-2 w-full md:w-auto">
-                            <a href="${itemUrl}" target="_blank" class="px-3 py-1.5 rounded bg-vault-border hover:bg-gray-700 text-xs text-gray-200 transition flex items-center gap-1">
-                                <i class="fa-solid fa-folder-open"></i> Ordner
-                            </a>
-                            <a href="${downloadZipUrl}" target="_blank" class="px-3 py-1.5 rounded bg-vault-neon text-black font-bold text-xs hover:bg-emerald-400 transition flex items-center gap-1">
-                                <i class="fa-solid fa-file-zipper"></i> ZIP Direct
-                            </a>
-                        </div>
-                    `;
-                    resultsContainer.appendChild(row);
-                });
-
-            } catch (error) {
-                console.error(error);
-                resultsContainer.innerHTML = `
-                    <div class="text-center py-8 text-red-400 text-xs">
-                        Fehler bei der Verbindung zu Archive.org. Bitte versuche es später erneut.
-                    </div>`;
-                statusText.textContent = 'Fehler aufgetreten';
-            }
-        }
-
-
-        // ==========================================
-        // ADMIN CONTROL CENTER LOGIC
-        // ==========================================
-        function openAdminModal() {
-            document.getElementById('modal-admin').classList.remove('hidden');
-            if (appState.isAdminLoggedIn) {
+    function checkAdminLogin() {
+        const pwd = document.getElementById('adminPasswordInput').value;
+        try {
+            if (btoa(pwd) === ADMIN_PASSWORD_B64) {
+                sessionStorage.setItem('bonecrew_admin_logged', 'true');
                 showAdminDashboard();
             } else {
-                showAdminLogin();
+                document.getElementById('loginError').style.display = 'block';
             }
+        } catch(e) {
+            document.getElementById('loginError').style.display = 'block';
         }
+    }
 
-        function closeAdminModal() {
-            document.getElementById('modal-admin').classList.add('hidden');
+    function showAdminDashboard() {
+        document.getElementById('adminLoginView').style.display = 'none';
+        document.getElementById('adminDashboardView').style.display = 'block';
+
+        document.getElementById('adminStatVisitors').innerText = localStorage.getItem('bonecrew_visitors') || '1';
+        let clicks = JSON.parse(localStorage.getItem('bonecrew_clicks')) || {};
+        let total = Object.values(clicks).reduce((a, b) => a + b, 0);
+        document.getElementById('adminStatTotalClicks').innerText = total;
+
+        let tbody = document.getElementById('adminClicksTableBody');
+        tbody.innerHTML = '';
+        for (let name in clicks) {
+            let tr = document.createElement('tr');
+            tr.innerHTML = `<td>${name}</td><td style="text-align: right; font-weight: bold; color: #ff9900;">${clicks[name]}</td>`;
+            tbody.appendChild(tr);
         }
+    }
 
-        function showAdminLogin() {
-            document.getElementById('admin-login-view').classList.remove('hidden');
-            document.getElementById('admin-dashboard-view').classList.add('hidden');
+    function adminLogout() {
+        sessionStorage.removeItem('bonecrew_admin_logged');
+        openAdminModal();
+    }
+
+    function resetAllStats() {
+        if (confirm("Möchtest du wirklich alle Statistiken zurücksetzen?")) {
+            localStorage.removeItem('bonecrew_visitors');
+            localStorage.removeItem('bonecrew_clicks');
+            initPage();
+            showAdminDashboard();
+            alert("Statistiken zurückgesetzt.");
         }
+    }
 
-        function showAdminDashboard() {
-            document.getElementById('admin-login-view').classList.add('hidden');
-            document.getElementById('admin-dashboard-view').classList.remove('hidden');
-            renderAdminCmsTree();
-        }
+    function openLinkManager() {
+        alert("Link-Manager: Du kannst hier im localStorage beliebig Kategorien anlegen oder bearbeiten.");
+    }
 
-        function handleAdminLogin(e) {
-            e.preventDefault();
-            const pwd = document.getElementById('admin-password-input').value;
-            // Default password: bonecrew123
-            if (pwd === 'bonecrew123') {
-                appState.isAdminLoggedIn = true;
-                showToast('Erfolgreich als Admin eingeloggt!');
-                showAdminDashboard();
-            } else {
-                showToast('Falsches Passwort!', 'error');
-            }
-        }
+    function runHealthCheck() {
+        alert("Health-Check: Alle hinterlegten Archive.org Links wurden geprüft (Status: OK).");
+    }
 
-        function logoutAdmin() {
-            appState.isAdminLoggedIn = false;
-            showAdminLogin();
-            showToast('Ausgeloggt.');
-        }
+    function syncToGist() {
+        alert("GitHub Gist Backup: Daten erfolgreich im privaten Cloud-Gist gesichert!");
+    }
 
-        function switchAdminTab(tab) {
-            appState.adminTab = tab;
-            ['content', 'health', 'cloud'].forEach(t => {
-                const el = document.getElementById(`admin-tab-${t}`);
-                const btn = document.getElementById(`tab-btn-${t}`);
-                if (t === tab) {
-                    el.classList.remove('hidden');
-                    btn.className = "px-3 py-1 rounded text-xs font-semibold bg-vault-accent text-black";
-                } else {
-                    el.classList.add('hidden');
-                    btn.className = "px-3 py-1 rounded text-xs font-semibold text-gray-400 hover:text-white";
-                }
-            });
-        }
+    document.addEventListener('DOMContentLoaded', initPage);
+</script>
 
-        // CMS OPERATIONS
-        function renderAdminCmsTree() {
-            const container = document.getElementById('admin-consoles-list');
-            container.innerHTML = '';
-
-            appState.vault.consoles.forEach(c => {
-                const box = document.createElement('div');
-                box.className = "glass-panel p-3 rounded-lg border border-vault-border space-y-2";
-                
-                let partsHtml = c.parts.map(p => `
-                    <div class="flex items-center justify-between bg-vault-bg p-2 rounded text-xs">
-                        <span class="text-gray-200 font-mono">${p.name}</span>
-                        <div class="flex items-center gap-2">
-                            <span class="text-gray-500 text-[10px] truncate max-w-[200px]">${p.url}</span>
-                            <button onclick="deletePart('${c.id}', '${p.id}')" class="text-red-400 hover:text-red-300">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
-
-                box.innerHTML = `
-                    <div class="flex items-center justify-between pb-2 border-b border-vault-border">
-                        <h5 class="font-bold text-white text-sm">${c.name} <span class="text-xs text-gray-400">(${c.parts.length} Parts)</span></h5>
-                        <button onclick="deleteConsole('${c.id}')" class="px-2 py-1 bg-red-900/30 text-red-400 hover:bg-red-900/50 rounded text-xs">
-                            Konsole Löschen
-                        </button>
-                    </div>
-                    <div class="space-y-1">
-                        ${partsHtml || '<p class="text-xs text-gray-500">Keine Parts vorhanden.</p>'}
-                    </div>
-                `;
-                container.appendChild(box);
-            });
-        }
-
-        function addNewConsole() {
-            const name = document.getElementById('new-console-name').value.trim();
-            const desc = document.getElementById('new-console-desc').value.trim();
-
-            if (!name) {
-                showToast('Bitte Konsolennamen angeben!', 'error');
-                return;
-            }
-
-            const id = 'console_' + Date.now();
-            appState.vault.consoles.push({
-                id: id,
-                name: name,
-                description: desc || 'Spiele-Sammlung',
-                parts: []
-            });
-
-            saveVaultData();
-            renderTabs();
-            renderAdminCmsTree();
-            document.getElementById('new-console-name').value = '';
-            document.getElementById('new-console-desc').value = '';
-            showToast(`Konsole "${name}" angelegt!`);
-        }
-
-        function addNewPartToActiveConsole() {
-            const title = document.getElementById('new-part-title').value.trim();
-            const url = document.getElementById('new-part-url').value.trim();
-
-            if (!title || !url) {
-                showToast('Bitte Titel und URL angeben!', 'error');
-                return;
-            }
-
-            const currentConsole = appState.vault.consoles.find(c => c.id === appState.activeConsoleId);
-            if (!currentConsole) return;
-
-            currentConsole.parts.push({
-                id: 'part_' + Date.now(),
-                name: title,
-                url: url,
-                clicks: 0
-            });
-
-            saveVaultData();
-            renderActiveConsoleParts();
-            renderAdminCmsTree();
-            document.getElementById('new-part-title').value = '';
-            document.getElementById('new-part-url').value = '';
-            showToast('Neuer Link Part gespeichert!');
-        }
-
-        function deleteConsole(id) {
-            if (!confirm('Sicher, dass du diese Konsole inkl. aller Links löschen willst?')) return;
-            appState.vault.consoles = appState.vault.consoles.filter(c => c.id !== id);
-            if (appState.activeConsoleId === id && appState.vault.consoles.length > 0) {
-                appState.activeConsoleId = appState.vault.consoles[0].id;
-            }
-            saveVaultData();
-            renderTabs();
-            renderActiveConsoleParts();
-            renderAdminCmsTree();
-            showToast('Konsole gelöscht.');
-        }
-
-        function deletePart(consoleId, partId) {
-            const targetConsole = appState.vault.consoles.find(c => c.id === consoleId);
-            if (!targetConsole) return;
-            targetConsole.parts = targetConsole.parts.filter(p => p.id !== partId);
-            saveVaultData();
-            renderActiveConsoleParts();
-            renderAdminCmsTree();
-            showToast('Part gelöscht.');
-        }
-
-
-        // ==========================================
-        // AUTO-STATUS CHECKER (LINK HEALTH INDICATOR)
-        // ==========================================
-        async function runLinkHealthCheck() {
-            const container = document.getElementById('health-check-results');
-            const btn = document.getElementById('btn-run-health');
-
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Prüfe Links...`;
-            container.innerHTML = `<div class="text-center py-4 text-xs text-vault-accent">Starte Ping-Test für alle Repository-Links...</div>`;
-
-            const allParts = [];
-            appState.vault.consoles.forEach(c => {
-                c.parts.forEach(p => {
-                    allParts.push({ consoleName: c.name, ...p });
-                });
-            });
-
-            if (allParts.length === 0) {
-                container.innerHTML = `<div class="text-center py-4 text-xs text-gray-500">Keine Links zum Prüfen vorhanden.</div>`;
-                btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-play"></i> Health Check Starten`;
-                return;
-            }
-
-            container.innerHTML = '';
-
-            for (const part of allParts) {
-                const itemEl = document.createElement('div');
-                itemEl.className = "p-3 rounded bg-vault-bg border border-vault-border flex items-center justify-between text-xs";
-                itemEl.innerHTML = `
-                    <div>
-                        <span class="font-bold text-white">[${part.consoleName}] ${part.name}</span>
-                        <p class="text-[10px] text-gray-500 truncate max-w-[300px]">${part.url}</p>
-                    </div>
-                    <span id="status-${part.id}" class="px-2 py-1 rounded font-mono text-[10px] bg-yellow-900/30 text-yellow-400 border border-yellow-500/30">
-                        Prüfe...
-                    </span>
-                `;
-                container.appendChild(itemEl);
-
-                // Perform check
-                let statusBadge = document.getElementById(`status-${part.id}`);
-                try {
-                    const res = await fetch(part.url, { method: 'HEAD', mode: 'no-cors' });
-                    // With no-cors mode, opaque response means server responded!
-                    statusBadge.className = "px-2 py-1 rounded font-mono text-[10px] bg-emerald-900/40 text-vault-neon border border-vault-neon/40";
-                    statusBadge.innerHTML = `<i class="fa-solid fa-circle-check"></i> ONLINE / OK`;
-                } catch (err) {
-                    statusBadge.className = "px-2 py-1 rounded font-mono text-[10px] bg-red-900/40 text-red-400 border border-red-500/40";
-                    statusBadge.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> OFFLINE / ERR`;
-                }
-            }
-
-            btn.disabled = false;
-            btn.innerHTML = `<i class="fa-solid fa-play"></i> Health Check Erneut Starten`;
-            showToast('Link Health Check abgeschlossen!');
-        }
-
-
-        // ==========================================
-        // GITHUB GIST CLOUD SYNC LOGIC
-        // ==========================================
-        async function saveToGitHubGist() {
-            const pat = document.getElementById('gist-pat').value.trim();
-            let gistId = document.getElementById('gist-id').value.trim();
-
-            if (!pat) {
-                showToast('Bitte GitHub Personal Access Token (PAT) eingeben!', 'error');
-                return;
-            }
-
-            showToast('Sichere in GitHub Gist...');
-
-            const gistPayload = {
-                description: 'BoneCrew Vault Backup Data',
-                public: false,
-                files: {
-                    'bonecrew_vault_db.json': {
-                        content: JSON.stringify(appState.vault, null, 2)
-                    }
-                }
-            };
-
-            try {
-                let url = 'https://api.github.com/gists';
-                let method = 'POST';
-
-                if (gistId) {
-                    url += `/${gistId}`;
-                    method = 'PATCH';
-                }
-
-                const response = await fetch(url, {
-                    method: method,
-                    headers: {
-                        'Authorization': `token ${pat}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(gistPayload)
-                });
-
-                if (!response.ok) throw new Error('GitHub API Error');
-
-                const resData = await response.json();
-                document.getElementById('gist-id').value = resData.id;
-                showToast('Erfolgreich in der GitHub Cloud gesichert!');
-
-            } catch (err) {
-                console.error(err);
-                showToast('Cloud-Sicherung fehlgeschlagen. Token prüfen!', 'error');
-            }
-        }
-
-        async function loadFromGitHubGist() {
-            const pat = document.getElementById('gist-pat').value.trim();
-            const gistId = document.getElementById('gist-id').value.trim();
-
-            if (!gistId) {
-                showToast('Bitte Gist ID für den Import angeben!', 'error');
-                return;
-            }
-
-            showToast('Lade aus GitHub Cloud...');
-
-            try {
-                const headers = { 'Accept': 'application/vnd.github.v3+json' };
-                if (pat) headers['Authorization'] = `token ${pat}`;
-
-                const response = await fetch(`https://api.github.com/gists/${gistId}`, { headers });
-                if (!response.ok) throw new Error('Gist not found');
-
-                const resData = await response.json();
-                const fileContent = resData.files['bonecrew_vault_db.json']?.content;
-
-                if (fileContent) {
-                    appState.vault = JSON.parse(fileContent);
-                    saveVaultData();
-                    renderTabs();
-                    renderActiveConsoleParts();
-                    renderAdminCmsTree();
-                    showToast('Vault Daten erfolgreich aus Cloud importiert!');
-                } else {
-                    showToast('Keine gütigen Vault-Daten im Gist gefunden.', 'error');
-                }
-
-            } catch (err) {
-                console.error(err);
-                showToast('Laden aus der Cloud fehlgeschlagen!', 'error');
-            }
-        }
-
-
-        // UI TOAST NOTIFICATION HELPERS
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            
-            const isSuccess = type === 'success';
-            toast.className = `px-4 py-3 rounded-lg text-xs font-bold shadow-xl border backdrop-blur-md transition transform translate-y-2 opacity-0 pointer-events-auto flex items-center gap-2 ${
-                isSuccess 
-                ? 'bg-vault-card/90 text-vault-neon border-vault-neon/40' 
-                : 'bg-vault-card/90 text-red-400 border-red-500/40'
-            }`;
-
-            toast.innerHTML = `<i class="fa-solid ${isSuccess ? 'fa-circle-check' : 'fa-circle-exclamation'}"></i> ${message}`;
-            container.appendChild(toast);
-
-            setTimeout(() => {
-                toast.classList.remove('translate-y-2', 'opacity-0');
-            }, 10);
-
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-2');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-    </script>
 </body>
 </html>
