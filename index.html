@@ -82,41 +82,38 @@
         }
         .modal-content {
             background: #0b1320; border: 1px solid #ff9900; border-radius: 12px; width: 100%;
-            max-width: 600px; padding: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+            max-width: 700px; padding: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.9);
             position: relative; max-height: 85vh; overflow-y: auto;
         }
         .modal-content h2 { color: #ff9900; margin-top: 0; font-size: 1.4em; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #1a273b; padding-bottom: 10px; }
         .close-modal { position: absolute; top: 20px; right: 20px; background: none; border: none; color: #8fa3be; font-size: 1.5em; cursor: pointer; }
         .close-modal:hover { color: #ffffff; }
-        .admin-form input[type="password"] {
-            width: 100%; padding: 12px; background: #070c14; border: 1px solid #1a273b;
-            border-radius: 6px; color: #fff; font-size: 1em; margin-bottom: 15px;
+        .admin-form input, .admin-form select {
+            width: 100%; padding: 10px; background: #070c14; border: 1px solid #1a273b;
+            border-radius: 6px; color: #fff; font-size: 0.95em; margin-bottom: 12px;
         }
-        .admin-form input:focus { outline: none; border-color: #ff9900; }
+        .admin-form input:focus, .admin-form select:focus { outline: none; border-color: #ff9900; }
         .admin-btn {
             background: linear-gradient(135deg, #ff9900 0%, #cc5500 100%); color: #fff; border: none;
             padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
         }
         .admin-btn:hover { background: linear-gradient(135deg, #00ff66 0%, #009933 100%); color: #000; }
-        .danger-btn { background: linear-gradient(135deg, #ff3333 0%, #990000 100%); margin-top: 20px; }
+        .danger-btn { background: linear-gradient(135deg, #ff3333 0%, #990000 100%); }
         .danger-btn:hover { background: linear-gradient(135deg, #ff6666 0%, #cc0000 100%); color: #fff; }
         .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9em; }
         .admin-table th, .admin-table td { padding: 10px; border-bottom: 1px solid #142033; text-align: left; }
         .admin-table th { color: #8fa3be; text-transform: uppercase; font-size: 0.8em; letter-spacing: 1px; }
         .admin-table td { color: #d1dfef; }
+        .admin-section { background: #070c14; border: 1px solid #1a273b; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
 <div class="banner-header">
-    <img src="Unbenannt.png" alt="BoneCrew Banner">
+    <img src="Unbenannt.png" alt="BoneCrew Banner" onerror="this.style.display='none'">
 </div>
 
-<div class="console-nav">
-    <button class="nav-btn active" onclick="switchConsole('xbox360', this)">Xbox 360</button>
-    <button class="nav-btn" onclick="switchConsole('xboxClassic', this)">Xbox Classic</button>
-    <button class="nav-btn" onclick="switchConsole('nintendoWii', this)">Nintendo Wii</button>
-</div>
+<div class="console-nav" id="consoleNavContainer"></div>
 
 <div class="container">
     <h1 id="vaultTitle">Microsoft Xbox 360 Vault</h1>
@@ -156,7 +153,7 @@
         
         <div id="adminLoginView">
             <h2>Admin Login</h2>
-            <p style="color: #8fa3be; font-size: 0.9em; margin-bottom: 20px;">Gib das Admin-Passwort ein, um Zugriff auf die detaillierten Statistiken zu erhalten.</p>
+            <p style="color: #8fa3be; font-size: 0.9em; margin-bottom: 20px;">Gib das Admin-Passwort ein, um Zugriff auf das CMS und die Statistiken zu erhalten.</p>
             <div class="admin-form">
                 <input type="password" id="adminPasswordInput" placeholder="Passwort eingeben..." onkeydown="if(event.key === 'Enter') checkAdminLogin()">
                 <button class="admin-btn" onclick="checkAdminLogin()">Anmelden</button>
@@ -165,34 +162,48 @@
         </div>
 
         <div id="adminDashboardView" style="display: none;">
-            <h2>Admin Control Center</h2>
+            <h2>Admin Control Center & CMS</h2>
             <p style="color: #00ff66; font-size: 0.9em; margin-bottom: 15px;">✓ Erfolgreich als Administrator angemeldet</p>
             
+            <!-- Statistik Grid im Admin Bereich -->
             <div class="stats-grid" style="margin-bottom: 20px;">
                 <div class="stat-card">
                     <div class="label">Besucher Total</div>
                     <div class="value" id="adminStatVisitors">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="label">Klicks Xbox 360</div>
-                    <div class="value" id="adminStatX360">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="label">Klicks Xbox Classic</div>
-                    <div class="value" id="adminStatXClassic">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="label">Klicks Nintendo Wii</div>
-                    <div class="value" id="adminStatWii">0</div>
+                    <div class="label">Downloads Total</div>
+                    <div class="value" id="adminStatTotalDownloads">0</div>
                 </div>
             </div>
 
-            <h3 style="color: #8fa3be; font-size: 0.9em; text-transform: uppercase; margin-top: 25px; border-bottom: 1px solid #1a273b; padding-bottom: 8px;">Detaillierte Klick-Statistiken pro Link</h3>
-            <div style="max-height: 250px; overflow-y: auto;">
+            <!-- CMS: Neue Kategorie / Konsole anlegen -->
+            <div class="admin-section">
+                <h3 style="color: #ff9900; margin-top: 0; font-size: 1em;">➕ Neue Konsole / Kategorie erstellen</h3>
+                <div class="admin-form" style="display: flex; gap: 10px; margin-bottom: 0;">
+                    <input type="text" id="newCatKey" placeholder="Schlüssel (z.B. ps2)" style="flex: 1; margin-bottom: 0;">
+                    <input type="text" id="newCatTitle" placeholder="Titel (z.B. Sony PlayStation 2)" style="flex: 2; margin-bottom: 0;">
+                    <button class="admin-btn" onclick="addNewCategory()">Erstellen</button>
+                </div>
+            </div>
+
+            <!-- CMS: Neuen Link hinzufügen -->
+            <div class="admin-section">
+                <h3 style="color: #ff9900; margin-top: 0; font-size: 1em;">🔗 Neuen Link zu Kategorie hinzufügen</h3>
+                <div class="admin-form" style="margin-bottom: 0;">
+                    <select id="linkTargetConsole"></select>
+                    <input type="text" id="newLinkName" placeholder="Link-Bezeichnung (z.B. PS2 - A - Redump.org)">
+                    <input type="text" id="newLinkUrl" placeholder="Download-URL (z.B. https://archive.org/download/...)">
+                    <button class="admin-btn" onclick="addNewLinkToConsole()">Link hinzufügen</button>
+                </div>
+            </div>
+
+            <h3 style="color: #8fa3be; font-size: 0.95em; text-transform: uppercase; margin-top: 25px; border-bottom: 1px solid #1a273b; padding-bottom: 8px;">Detaillierte Klick-Statistiken</h3>
+            <div style="max-height: 200px; overflow-y: auto;">
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>Konsolen-Teil / Link-Name</th>
+                            <th>Link-Name</th>
                             <th style="width: 80px; text-align: right;">Klicks</th>
                         </tr>
                     </thead>
@@ -209,115 +220,57 @@
 </div>
 
 <script>
-    const vaultData = {
+    const defaultVaultData = {
         xbox360: {
             key: "xbox360",
-            title: "Microsoft Xbox 360 Vault",
+            title: "Microsoft Xbox 360",
             items: [
-                { name: "Microsoft Xbox 360 - # - Redump.org", link: "https://archive.org/download/microsoft_xbox360_numberssymbols" },
+                { name: "Microsoft Xbox 360 - # - Redump.org", link: "https://archive.org/download/microsoft_xbox360_number" },
                 { name: "Microsoft Xbox 360 - A (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_a_part1" },
                 { name: "Microsoft Xbox 360 - A (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_a_part2" },
                 { name: "Microsoft Xbox 360 - B (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_b_part1" },
                 { name: "Microsoft Xbox 360 - B (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_b_part2" },
                 { name: "Microsoft Xbox 360 - C (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_c_part1" },
                 { name: "Microsoft Xbox 360 - C (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_c_part2" },
-                { name: "Microsoft Xbox 360 - D (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_d_part1" },
-                { name: "Microsoft Xbox 360 - D (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_d_part2" },
-                { name: "Microsoft Xbox 360 - D (Part 3) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_d_part3" },
-                { name: "Microsoft Xbox 360 - E - Redump.org", link: "https://archive.org/download/microsoft_xbox360_e" },
-                { name: "Microsoft Xbox 360 - F (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_f_part1" },
-                { name: "Microsoft Xbox 360 - F (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_f_part2" },
-                { name: "Microsoft Xbox 360 - G - Redump.org", link: "https://archive.org/download/microsoft_xbox360_g" },
-                { name: "Microsoft Xbox 360 - H - Redump.org", link: "https://archive.org/download/microsoft_xbox360_h" },
-                { name: "Microsoft Xbox 360 - I - Redump.org", link: "https://archive.org/download/microsoft_xbox360_i" },
-                { name: "Microsoft Xbox 360 - J - Redump.org", link: "https://archive.org/download/microsoft_xbox360_j" },
-                { name: "Microsoft Xbox 360 - K - Redump.org", link: "https://archive.org/download/microsoft_xbox360_k" },
-                { name: "Microsoft Xbox 360 - L - Redump.org", link: "https://archive.org/download/microsoft_xbox360_l" },
-                { name: "Microsoft Xbox 360 - M (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_m_part1" },
-                { name: "Microsoft Xbox 360 - M (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_m_part2" },
-                { name: "Microsoft Xbox 360 - N (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_n_part1" },
-                { name: "Microsoft Xbox 360 - N (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_n_part2" },
-                { name: "Microsoft Xbox 360 - O - Redump.org", link: "https://archive.org/download/microsoft_xbox360_o" },
-                { name: "Microsoft Xbox 360 - P - Redump.org", link: "https://archive.org/download/microsoft_xbox360_p" },
-                { name: "Microsoft Xbox 360 - Q - Redump.org", link: "https://archive.org/download/microsoft_xbox360_q" },
-                { name: "Microsoft Xbox 360 - R - Redump.org", link: "https://archive.org/download/microsoft_xbox360_r" },
-                { name: "Microsoft Xbox 360 - S (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_s_part1" },
-                { name: "Microsoft Xbox 360 - S (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_s_part2" },
-                { name: "Microsoft Xbox 360 - T (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_t_part1" },
-                { name: "Microsoft Xbox 360 - T (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_t_part2" },
-                { name: "Microsoft Xbox 360 - U - Redump.org", link: "https://archive.org/download/microsoft_xbox360_u" },
-                { name: "Microsoft Xbox 360 - V - Redump.org", link: "https://archive.org/download/microsoft_xbox360_v" },
-                { name: "Microsoft Xbox 360 - W - Redump.org", link: "https://archive.org/download/microsoft_xbox360_w" },
-                { name: "Microsoft Xbox 360 - X (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_x_part1" },
-                { name: "Microsoft Xbox 360 - X (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_x_part2" },
-                { name: "Microsoft Xbox 360 - Y - Redump.org", link: "https://archive.org/download/microsoft_xbox360_y" },
-                { name: "Microsoft Xbox 360 - Z - Redump.org", link: "https://archive.org/download/microsoft_xbox360_z" },
-                { name: "Microsoft Xbox 360 - Title Updates - No-Intro", link: "https://archive.org/download/microsoft_xbox360_titleupdates" },
-                { name: "Microsoft Xbox 360 - Digital (Part 1)", link: "https://archive.org/download/microsoft_xbox360_digital_part1" },
-                { name: "Microsoft Xbox 360 - Digital (Part 2)", link: "https://archive.org/download/microsoft_xbox360_digital_part2" },
-                { name: "Microsoft Xbox 360 - Digital (Part 3)", link: "https://archive.org/download/microsoft_xbox360_digital_part3" },
-                { name: "Microsoft Xbox 360 - Digital (Part 4)", link: "https://archive.org/download/microsoft_xbox360_digital_part4" },
-                { name: "Microsoft Xbox 360 - Digital (Part 5)", link: "https://archive.org/download/microsoft_xbox360_digital_part5" },
-                { name: "Microsoft Xbox 360 - Digital (Part 6)", link: "https://archive.org/download/microsoft_xbox360_digital_part6" },
-                { name: "Microsoft Xbox 360 - Digital (Part 7)", link: "https://archive.org/download/microsoft_xbox360_digital_part7" }
+                { name: "Microsoft Xbox 360 - Digital (Part 1)", link: "https://archive.org/download/microsoft_xbox360_digital_part1" }
             ]
         },
         xboxClassic: {
             key: "xboxClassic",
-            title: "Microsoft Xbox Classic Vault",
+            title: "Microsoft Xbox Classic",
             items: [
                 { name: "Microsoft Xbox - # - Redump.org", link: "https://archive.org/download/microsoft_xbox_number" },
                 { name: "Microsoft Xbox - A - Redump.org", link: "https://archive.org/download/microsoft_xbox_a" },
-                { name: "Microsoft Xbox - B - Redump.org", link: "https://archive.org/download/microsoft_xbox_b" },
-                { name: "Microsoft Xbox - C (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_c_part1" },
-                { name: "Microsoft Xbox - C (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_c_part2" },
-                { name: "Microsoft Xbox - D - Redump.org", link: "https://archive.org/download/microsoft_xbox_d" },
-                { name: "Microsoft Xbox - E - Redump.org", link: "https://archive.org/download/microsoft_xbox_e" },
-                { name: "Microsoft Xbox - F - Redump.org", link: "https://archive.org/download/microsoft_xbox_f" },
-                { name: "Microsoft Xbox - G - Redump.org", link: "https://archive.org/download/microsoft_xbox_g" },
-                { name: "Microsoft Xbox - H - Redump.org", link: "https://archive.org/download/microsoft_xbox_h" },
-                { name: "Microsoft Xbox - I - Redump.org", link: "https://archive.org/download/microsoft_xbox_i" },
-                { name: "Microsoft Xbox - J - Redump.org", link: "https://archive.org/download/microsoft_xbox_j" },
-                { name: "Microsoft Xbox - K - Redump.org", link: "https://archive.org/download/microsoft_xbox_k" },
-                { name: "Microsoft Xbox - L - Redump.org", link: "https://archive.org/download/microsoft_xbox_l" },
-                { name: "Microsoft Xbox - M (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_m_part1" },
-                { name: "Microsoft Xbox - M (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_m_part2" },
-                { name: "Microsoft Xbox - N - Redump.org", link: "https://archive.org/download/microsoft_xbox_n" },
-                { name: "Microsoft Xbox - O - Redump.org", link: "https://archive.org/download/microsoft_xbox_o" },
-                { name: "Microsoft Xbox - P - Redump.org", link: "https://archive.org/download/microsoft_xbox_p" },
-                { name: "Microsoft Xbox - Q - Redump.org", link: "https://archive.org/download/microsoft_xbox_q" },
-                { name: "Microsoft Xbox - R - Redump.org", link: "https://archive.org/download/microsoft_xbox_r" },
-                { name: "Microsoft Xbox - S (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_s_part1" },
-                { name: "Microsoft Xbox - S (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_s_part2" },
-                { name: "Microsoft Xbox - T (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_t_part1" },
-                { name: "Microsoft Xbox - T (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_t_part2" },
-                { name: "Microsoft Xbox - U - Redump.org", link: "https://archive.org/download/microsoft_xbox_u" },
-                { name: "Microsoft Xbox - V - Redump.org", link: "https://archive.org/download/microsoft_xbox_v" },
-                { name: "Microsoft Xbox - W - Redump.org", link: "https://archive.org/download/microsoft_xbox_w" },
-                { name: "Microsoft Xbox - X - Redump.org", link: "https://archive.org/download/microsoft_xbox_x" },
-                { name: "Microsoft Xbox - Y - Redump.org", link: "https://archive.org/download/microsoft_xbox_y" },
-                { name: "Microsoft Xbox - Z - Redump.org", link: "https://archive.org/download/microsoft_xbox_z" },
-                { name: "Microsoft Xbox - Title Updates & DLC", link: "https://archive.org/download/microsoft_xbox_dlc_titleupdates" }
+                { name: "Microsoft Xbox - B - Redump.org", link: "https://archive.org/download/microsoft_xbox_b" }
             ]
         },
         nintendoWii: {
             key: "nintendoWii",
-            title: "Nintendo Wii Vault",
+            title: "Nintendo Wii",
             items: [
                 { name: "Nintendo Wii - Redump Individual Games (Part 1)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part1" },
-                { name: "Nintendo Wii - Redump Individual Games (Part 2)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part2" },
-                { name: "Nintendo Wii - Redump Individual Games (Part 3)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part3" },
-                { name: "Nintendo Wii - Redump Individual Games (Part 4)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Cases-Part4" },
-                { name: "Nintendo Wii - Redump Individual Games (Part 5)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part5" },
-                { name: "Nintendo Wii - Redump Individual Games (Part 6)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part6" }
+                { name: "Nintendo Wii - Redump Individual Games (Part 2)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part2" }
             ]
         }
     };
 
-    // Passwort als Base64 ("bonecrew123" verschlüsselt = Ym9uZWNyZXcxMjM=)
     const ADMIN_PASSWORD_B64 = "Ym9uZWNyZXcxMjM=";
+    let currentConsoleKey = 'xbox360';
 
-    function initStats() {
+    function getVaultData() {
+        let saved = localStorage.getItem('bonecrew_vault_custom_data');
+        if (!saved) {
+            localStorage.setItem('bonecrew_vault_custom_data', JSON.stringify(defaultVaultData));
+            return defaultVaultData;
+        }
+        try { return JSON.parse(saved); } catch(e) { return defaultVaultData; }
+    }
+
+    function saveVaultData(data) {
+        localStorage.setItem('bonecrew_vault_custom_data', JSON.stringify(data));
+    }
+
+    function initPage() {
         if (!localStorage.getItem('bonecrew_visitors')) {
             localStorage.setItem('bonecrew_visitors', '1');
         } else if (!sessionStorage.getItem('bonecrew_counted')) {
@@ -326,16 +279,50 @@
             sessionStorage.setItem('bonecrew_counted', 'true');
         }
 
-        if (!localStorage.getItem('bonecrew_clicks')) {
-            let initialClicks = {};
-            for (let consoleKey in vaultData) {
-                vaultData[consoleKey].items.forEach(item => {
-                    initialClicks[item.name] = 0;
-                });
-            }
-            localStorage.setItem('bonecrew_clicks', JSON.stringify(initialClicks));
+        renderConsoleNav();
+        const data = getVaultData();
+        if (!data[currentConsoleKey]) {
+            currentConsoleKey = Object.keys(data)[0] || 'xbox360';
         }
-        updatePublicStatsUI();
+        switchConsole(currentConsoleKey);
+        updatePublicStats();
+    }
+
+    function renderConsoleNav() {
+        const data = getVaultData();
+        const nav = document.getElementById('consoleNavContainer');
+        nav.innerHTML = '';
+
+        for (let key in data) {
+            const btn = document.createElement('button');
+            btn.className = `nav-btn ${key === currentConsoleKey ? 'active' : ''}`;
+            btn.innerText = data[key].title;
+            btn.onclick = () => switchConsole(key, btn);
+            nav.appendChild(btn);
+        }
+    }
+
+    function switchConsole(key, btnElement) {
+        currentConsoleKey = key;
+        const data = getVaultData();
+        const consoleData = data[key];
+        if (!consoleData) return;
+
+        document.getElementById('vaultTitle').innerText = consoleData.title + ' Vault';
+        const list = document.getElementById('vaultList');
+        list.innerHTML = '';
+
+        consoleData.items.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="title">${item.name}</span> <a class="dl-btn" href="${item.link}" target="_blank">Download</a>`;
+            li.querySelector('.dl-btn').onclick = () => trackClick(item.name, key);
+            list.appendChild(li);
+        });
+
+        if (btnElement) {
+            document.querySelectorAll('.console-nav .nav-btn').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
     }
 
     function trackClick(itemName, consoleKey) {
@@ -343,53 +330,30 @@
         clicks[itemName] = (clicks[itemName] || 0) + 1;
         localStorage.setItem('bonecrew_clicks', JSON.stringify(clicks));
 
-        let consoleClicks = JSON.parse(localStorage.getItem('bonecrew_console_clicks')) || { xbox360: 0, xboxClassic: 0, nintendoWii: 0 };
+        let consoleClicks = JSON.parse(localStorage.getItem('bonecrew_console_clicks')) || {};
         consoleClicks[consoleKey] = (consoleClicks[consoleKey] || 0) + 1;
         localStorage.setItem('bonecrew_console_clicks', JSON.stringify(consoleClicks));
 
-        updatePublicStatsUI();
+        updatePublicStats();
     }
 
-    function updatePublicStatsUI() {
+    function updatePublicStats() {
         document.getElementById('statVisitors').innerText = localStorage.getItem('bonecrew_visitors') || '1';
-        
         let clicks = JSON.parse(localStorage.getItem('bonecrew_clicks')) || {};
-        let totalDownloads = Object.values(clicks).reduce((a, b) => a + b, 0);
-        document.getElementById('statTotalDownloads').innerText = totalDownloads;
+        let total = Object.values(clicks).reduce((a, b) => a + b, 0);
+        document.getElementById('statTotalDownloads').innerText = total;
 
-        let consoleClicks = JSON.parse(localStorage.getItem('bonecrew_console_clicks')) || { xbox360: 0, xboxClassic: 0, nintendoWii: 0 };
+        let consoleClicks = JSON.parse(localStorage.getItem('bonecrew_console_clicks')) || {};
+        let data = getVaultData();
         let topConsole = "Xbox 360";
-        let max = consoleClicks.xbox360;
-        if (consoleClicks.xboxClassic > max) { max = consoleClicks.xboxClassic; topConsole = "Xbox Classic"; }
-        if (consoleClicks.nintendoWii > max) { max = consoleClicks.nintendoWii; topConsole = "Nintendo Wii"; }
-        document.getElementById('statTopConsole').innerText = topConsole;
-    }
-
-    function switchConsole(key, element) {
-        const consoleData = vaultData[key];
-        if (!consoleData) return;
-
-        document.getElementById('vaultTitle').innerText = consoleData.title;
-        const listContainer = document.getElementById('vaultList');
-        listContainer.innerHTML = '';
-
-        consoleData.items.forEach(item => {
-            const li = document.createElement('li');
-            li.innerHTML = `<span class="title">${item.name}</span> <a class="dl-btn" href="${item.link}" target="_blank">Download</a>`;
-            
-            const btn = li.querySelector('.dl-btn');
-            btn.addEventListener('click', () => {
-                trackClick(item.name, key);
-            });
-
-            listContainer.appendChild(li);
-        });
-
-        if (element) {
-            const buttons = document.querySelectorAll('.console-nav .nav-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            element.classList.add('active');
+        let max = -1;
+        for (let k in consoleClicks) {
+            if (consoleClicks[k] > max && data[k]) {
+                max = consoleClicks[k];
+                topConsole = data[k].title;
+            }
         }
+        document.getElementById('statTopConsole').innerText = topConsole;
     }
 
     function openAdminModal() {
@@ -411,15 +375,13 @@
     function checkAdminLogin() {
         const pwd = document.getElementById('adminPasswordInput').value;
         try {
-            // Eingabe in Base64 umwandeln und vergleichen (sicher vor direktem Auslesen im Klartext)
-            const encodedPwd = btoa(pwd);
-            if (encodedPwd === ADMIN_PASSWORD_B64) {
+            if (btoa(pwd) === ADMIN_PASSWORD_B64) {
                 sessionStorage.setItem('bonecrew_admin_logged', 'true');
                 showAdminDashboard();
             } else {
                 document.getElementById('loginError').style.display = 'block';
             }
-        } catch (e) {
+        } catch(e) {
             document.getElementById('loginError').style.display = 'block';
         }
     }
@@ -429,15 +391,23 @@
         document.getElementById('adminDashboardView').style.display = 'block';
 
         document.getElementById('adminStatVisitors').innerText = localStorage.getItem('bonecrew_visitors') || '1';
-        let consoleClicks = JSON.parse(localStorage.getItem('bonecrew_console_clicks')) || { xbox360: 0, xboxClassic: 0, nintendoWii: 0 };
-        document.getElementById('adminStatX360').innerText = consoleClicks.xbox360;
-        document.getElementById('adminStatXClassic').innerText = consoleClicks.xboxClassic;
-        document.getElementById('adminStatWii').innerText = consoleClicks.nintendoWii;
-
         let clicks = JSON.parse(localStorage.getItem('bonecrew_clicks')) || {};
+        let total = Object.values(clicks).reduce((a, b) => a + b, 0);
+        document.getElementById('adminStatTotalDownloads').innerText = total;
+
+        // Select-Box für Konsolen im CMS befüllen
+        let select = document.getElementById('linkTargetConsole');
+        select.innerHTML = '';
+        let data = getVaultData();
+        for (let k in data) {
+            let opt = document.createElement('option');
+            opt.value = k;
+            opt.innerText = data[k].title;
+            select.appendChild(opt);
+        }
+
         let tbody = document.getElementById('adminClicksTableBody');
         tbody.innerHTML = '';
-
         for (let name in clicks) {
             let tr = document.createElement('tr');
             tr.innerHTML = `<td>${name}</td><td style="text-align: right; font-weight: bold; color: #ff9900;">${clicks[name]}</td>`;
@@ -445,27 +415,64 @@
         }
     }
 
+    function addNewCategory() {
+        let key = document.getElementById('newCatKey').value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+        let title = document.getElementById('newCatTitle').value.trim();
+        if (!key || !title) {
+            alert('Bitte gültigen Schlüssel und Titel eingeben.');
+            return;
+        }
+        let data = getVaultData();
+        if (data[key]) {
+            alert('Diese Kategorie existiert bereits.');
+            return;
+        }
+        data[key] = { key: key, title: title, items: [] };
+        saveVaultData(data);
+        document.getElementById('newCatKey').value = '';
+        document.getElementById('newCatTitle').value = '';
+        renderConsoleNav();
+        showAdminDashboard();
+        alert('Kategorie erfolgreich erstellt!');
+    }
+
+    function addNewLinkToConsole() {
+        let consoleKey = document.getElementById('linkTargetConsole').value;
+        let name = document.getElementById('newLinkName').value.trim();
+        let url = document.getElementById('newLinkUrl').value.trim();
+        if (!name || !url) {
+            alert('Bitte Link-Bezeichnung und URL eingeben.');
+            return;
+        }
+        let data = getVaultData();
+        if (!data[consoleKey]) return;
+
+        data[consoleKey].items.push({ name: name, link: url });
+        saveVaultData(data);
+        document.getElementById('newLinkName').value = '';
+        document.getElementById('newLinkUrl').value = '';
+        switchConsole(currentConsoleKey);
+        showAdminDashboard();
+        alert('Neuer Link erfolgreich hinzugefügt!');
+    }
+
     function adminLogout() {
         sessionStorage.removeItem('bonecrew_admin_logged');
-        document.getElementById('adminDashboardView').style.display = 'none';
-        document.getElementById('adminLoginView').style.display = 'block';
-        document.getElementById('adminPasswordInput').value = '';
+        openAdminModal();
     }
 
     function resetAllStats() {
-        if (confirm("Möchtest du wirklich alle Besucher- und Klick-Statistiken zurücksetzen?")) {
-            localStorage.clear();
-            initStats();
+        if (confirm("Möchtest du wirklich alle Statistiken zurücksetzen?")) {
+            localStorage.removeItem('bonecrew_visitors');
+            localStorage.removeItem('bonecrew_clicks');
+            localStorage.removeItem('bonecrew_console_clicks');
+            initPage();
             showAdminDashboard();
-            alert("Statistiken wurden zurückgesetzt.");
+            alert("Statistiken zurückgesetzt.");
         }
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        initStats();
-        const firstBtn = document.querySelector('.console-nav .nav-btn');
-        switchConsole('xbox360', firstBtn);
-    });
+    document.addEventListener('DOMContentLoaded', initPage);
 </script>
 
 </body>
