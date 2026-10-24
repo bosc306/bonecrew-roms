@@ -100,10 +100,6 @@
         .admin-btn:hover { background: linear-gradient(135deg, #00ff66 0%, #009933 100%); color: #000; }
         .danger-btn { background: linear-gradient(135deg, #ff3333 0%, #990000 100%); }
         .danger-btn:hover { background: linear-gradient(135deg, #ff6666 0%, #cc0000 100%); color: #fff; }
-        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9em; }
-        .admin-table th, .admin-table td { padding: 10px; border-bottom: 1px solid #142033; text-align: left; }
-        .admin-table th { color: #8fa3be; text-transform: uppercase; font-size: 0.8em; letter-spacing: 1px; }
-        .admin-table td { color: #d1dfef; }
         .admin-section { background: #070c14; border: 1px solid #1a273b; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
     </style>
 </head>
@@ -153,7 +149,7 @@
         
         <div id="adminLoginView">
             <h2>Admin Login</h2>
-            <p style="color: #8fa3be; font-size: 0.9em; margin-bottom: 20px;">Gib das Admin-Passwort ein, um Zugriff auf das CMS und die GitHub-Cloud zu erhalten.</p>
+            <p style="color: #8fa3be; font-size: 0.9em; margin-bottom: 20px;">Gib das Admin-Passwort ein, um Zugriff auf das CMS zu erhalten.</p>
             <div class="admin-form">
                 <input type="password" id="adminPasswordInput" placeholder="Passwort eingeben..." onkeydown="if(event.key === 'Enter') checkAdminLogin()">
                 <button class="admin-btn" onclick="checkAdminLogin()">Anmelden</button>
@@ -165,26 +161,24 @@
             <h2>Admin Control Center & Cloud Sync</h2>
             <p style="color: #00ff66; font-size: 0.9em; margin-bottom: 15px;">✓ Erfolgreich als Administrator angemeldet</p>
             
-            <!-- GitHub Gist Cloud Sync Einstellungen -->
+            <!-- GitHub Gist Cloud Sync -->
             <div class="admin-section" style="border-color: #ff9900;">
                 <h3 style="color: #ff9900; margin-top: 0; font-size: 1em;">☁️ GitHub Gist Cloud-Sync</h3>
-                <p style="color: #8fa3be; font-size: 0.85em; margin-bottom: 10px;">Hinterlege dein GitHub Token & die Gist-ID, um Änderungen weltweit für alle Besucher zu synchronisieren.</p>
                 <div class="admin-form" style="margin-bottom: 0;">
                     <input type="text" id="ghToken" placeholder="GitHub Personal Access Token (ghp_...)">
-                    <input type="text" id="ghGistId" placeholder="GitHub Gist ID (optional beim ersten Speichern)">
+                    <input type="text" id="ghGistId" placeholder="GitHub Gist ID (optional)">
                     <div style="display: flex; gap: 10px;">
-                        <button class="btn-action admin-btn" style="flex: 1;" onclick="saveGistConfig()">🔑 Anmeldedaten speichern</button>
-                        <button class="btn-action admin-btn" style="flex: 1; background: linear-gradient(135deg, #00cc66 0%, #006633 100%);" onclick="syncToCloudGist()">🚀 In Cloud sichern (Gist Upload)</button>
+                        <button class="admin-btn" style="flex: 1;" onclick="saveGistConfig()">🔑 Anmeldedaten speichern</button>
+                        <button class="admin-btn" style="flex: 1; background: linear-gradient(135deg, #00cc66 0%, #006633 100%);" onclick="syncToCloudGist()">🚀 In Cloud sichern</button>
                     </div>
                 </div>
             </div>
 
-            <!-- CMS: Neue Kategorie / Konsole anlegen -->
+            <!-- CMS: Neue Konsole anlegen -->
             <div class="admin-section">
                 <h3 style="color: #ff9900; margin-top: 0; font-size: 1em;">➕ Neue Konsole / Kategorie erstellen</h3>
                 <div class="admin-form" style="display: flex; gap: 10px; margin-bottom: 0;">
-                    <input type="text" id="newCatKey" placeholder="Schlüssel (z.B. ps2)" style="flex: 1; margin-bottom: 0;">
-                    <input type="text" id="newCatTitle" placeholder="Titel (z.B. PlayStation 2)" style="flex: 2; margin-bottom: 0;">
+                    <input type="text" id="newCatTitle" placeholder="Konsolen-Name (z.B. PlayStation 2)" style="flex: 1; margin-bottom: 0;">
                     <button class="admin-btn" onclick="addNewCategory()">Erstellen</button>
                 </div>
             </div>
@@ -209,6 +203,7 @@
 </div>
 
 <script>
+    // VOLLSTÄNDIGER DATASET für Xbox 360, Classic & Wii
     const defaultVaultData = {
         xbox360: {
             key: "xbox360",
@@ -217,7 +212,49 @@
                 { name: "Microsoft Xbox 360 - # - Redump.org", link: "https://archive.org/download/microsoft_xbox360_number" },
                 { name: "Microsoft Xbox 360 - A (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_a_part1" },
                 { name: "Microsoft Xbox 360 - A (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_a_part2" },
-                { name: "Microsoft Xbox 360 - Digital (Part 1)", link: "https://archive.org/download/microsoft_xbox360_digital_part1" }
+                { name: "Microsoft Xbox 360 - B (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_b_part1" },
+                { name: "Microsoft Xbox 360 - B (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_b_part2" },
+                { name: "Microsoft Xbox 360 - C (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_c_part1" },
+                { name: "Microsoft Xbox 360 - C (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_c_part2" },
+                { name: "Microsoft Xbox 360 - D (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_d_part1" },
+                { name: "Microsoft Xbox 360 - D (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_d_part2" },
+                { name: "Microsoft Xbox 360 - D (Part 3) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_d_part3" },
+                { name: "Microsoft Xbox 360 - E - Redump.org", link: "https://archive.org/download/microsoft_xbox360_e" },
+                { name: "Microsoft Xbox 360 - F (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_f_part1" },
+                { name: "Microsoft Xbox 360 - F (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_f_part2" },
+                { name: "Microsoft Xbox 360 - G - Redump.org", link: "https://archive.org/download/microsoft_xbox360_g" },
+                { name: "Microsoft Xbox 360 - H - Redump.org", link: "https://archive.org/download/microsoft_xbox360_h" },
+                { name: "Microsoft Xbox 360 - I - Redump.org", link: "https://archive.org/download/microsoft_xbox360_i" },
+                { name: "Microsoft Xbox 360 - J - Redump.org", link: "https://archive.org/download/microsoft_xbox360_j" },
+                { name: "Microsoft Xbox 360 - K - Redump.org", link: "https://archive.org/download/microsoft_xbox360_k" },
+                { name: "Microsoft Xbox 360 - L - Redump.org", link: "https://archive.org/download/microsoft_xbox360_l" },
+                { name: "Microsoft Xbox 360 - M (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_m_part1" },
+                { name: "Microsoft Xbox 360 - M (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_m_part2" },
+                { name: "Microsoft Xbox 360 - N (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_n_part1" },
+                { name: "Microsoft Xbox 360 - N (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_n_part2" },
+                { name: "Microsoft Xbox 360 - O - Redump.org", link: "https://archive.org/download/microsoft_xbox360_o" },
+                { name: "Microsoft Xbox 360 - P - Redump.org", link: "https://archive.org/download/microsoft_xbox360_p" },
+                { name: "Microsoft Xbox 360 - Q - Redump.org", link: "https://archive.org/download/microsoft_xbox360_q" },
+                { name: "Microsoft Xbox 360 - R - Redump.org", link: "https://archive.org/download/microsoft_xbox360_r" },
+                { name: "Microsoft Xbox 360 - S (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_s_part1" },
+                { name: "Microsoft Xbox 360 - S (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_s_part2" },
+                { name: "Microsoft Xbox 360 - T (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_t_part1" },
+                { name: "Microsoft Xbox 360 - T (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_t_part2" },
+                { name: "Microsoft Xbox 360 - U - Redump.org", link: "https://archive.org/download/microsoft_xbox360_u" },
+                { name: "Microsoft Xbox 360 - V - Redump.org", link: "https://archive.org/download/microsoft_xbox360_v" },
+                { name: "Microsoft Xbox 360 - W - Redump.org", link: "https://archive.org/download/microsoft_xbox360_w" },
+                { name: "Microsoft Xbox 360 - X (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_x_part1" },
+                { name: "Microsoft Xbox 360 - X (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_x_part2" },
+                { name: "Microsoft Xbox 360 - Y - Redump.org", link: "https://archive.org/download/microsoft_xbox360_y" },
+                { name: "Microsoft Xbox 360 - Z - Redump.org", link: "https://archive.org/download/microsoft_xbox360_z" },
+                { name: "Microsoft Xbox 360 - Title Updates - No-Intro", link: "https://archive.org/download/microsoft_xbox360_titleupdates" },
+                { name: "Microsoft Xbox 360 - Digital (Part 1)", link: "https://archive.org/download/microsoft_xbox360_digital_part1" },
+                { name: "Microsoft Xbox 360 - Digital (Part 2)", link: "https://archive.org/download/microsoft_xbox360_digital_part2" },
+                { name: "Microsoft Xbox 360 - Digital (Part 3)", link: "https://archive.org/download/microsoft_xbox360_digital_part3" },
+                { name: "Microsoft Xbox 360 - Digital (Part 4)", link: "https://archive.org/download/microsoft_xbox360_digital_part4" },
+                { name: "Microsoft Xbox 360 - Digital (Part 5)", link: "https://archive.org/download/microsoft_xbox360_digital_part5" },
+                { name: "Microsoft Xbox 360 - Digital (Part 6)", link: "https://archive.org/download/microsoft_xbox360_digital_part6" },
+                { name: "Microsoft Xbox 360 - Digital (Part 7)", link: "https://archive.org/download/microsoft_xbox360_digital_part7" }
             ]
         },
         xboxClassic: {
@@ -225,14 +262,49 @@
             title: "Microsoft Xbox Classic",
             items: [
                 { name: "Microsoft Xbox - # - Redump.org", link: "https://archive.org/download/microsoft_xbox_number" },
-                { name: "Microsoft Xbox - A - Redump.org", link: "https://archive.org/download/microsoft_xbox_a" }
+                { name: "Microsoft Xbox - A - Redump.org", link: "https://archive.org/download/microsoft_xbox_a" },
+                { name: "Microsoft Xbox - B - Redump.org", link: "https://archive.org/download/microsoft_xbox_b" },
+                { name: "Microsoft Xbox - C (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_c_part1" },
+                { name: "Microsoft Xbox - C (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_c_part2" },
+                { name: "Microsoft Xbox - D - Redump.org", link: "https://archive.org/download/microsoft_xbox_d" },
+                { name: "Microsoft Xbox - E - Redump.org", link: "https://archive.org/download/microsoft_xbox_e" },
+                { name: "Microsoft Xbox - F - Redump.org", link: "https://archive.org/download/microsoft_xbox_f" },
+                { name: "Microsoft Xbox - G - Redump.org", link: "https://archive.org/download/microsoft_xbox_g" },
+                { name: "Microsoft Xbox - H - Redump.org", link: "https://archive.org/download/microsoft_xbox_h" },
+                { name: "Microsoft Xbox - I - Redump.org", link: "https://archive.org/download/microsoft_xbox_i" },
+                { name: "Microsoft Xbox - J - Redump.org", link: "https://archive.org/download/microsoft_xbox_j" },
+                { name: "Microsoft Xbox - K - Redump.org", link: "https://archive.org/download/microsoft_xbox_k" },
+                { name: "Microsoft Xbox - L - Redump.org", link: "https://archive.org/download/microsoft_xbox_l" },
+                { name: "Microsoft Xbox - M (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_m_part1" },
+                { name: "Microsoft Xbox - M (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_m_part2" },
+                { name: "Microsoft Xbox - N - Redump.org", link: "https://archive.org/download/microsoft_xbox_n" },
+                { name: "Microsoft Xbox - O - Redump.org", link: "https://archive.org/download/microsoft_xbox_o" },
+                { name: "Microsoft Xbox - P - Redump.org", link: "https://archive.org/download/microsoft_xbox_p" },
+                { name: "Microsoft Xbox - Q - Redump.org", link: "https://archive.org/download/microsoft_xbox_q" },
+                { name: "Microsoft Xbox - R - Redump.org", link: "https://archive.org/download/microsoft_xbox_r" },
+                { name: "Microsoft Xbox - S (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_s_part1" },
+                { name: "Microsoft Xbox - S (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_s_part2" },
+                { name: "Microsoft Xbox - T (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox_t_part1" },
+                { name: "Microsoft Xbox - T (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox_t_part2" },
+                { name: "Microsoft Xbox - U - Redump.org", link: "https://archive.org/download/microsoft_xbox_u" },
+                { name: "Microsoft Xbox - V - Redump.org", link: "https://archive.org/download/microsoft_xbox_v" },
+                { name: "Microsoft Xbox - W - Redump.org", link: "https://archive.org/download/microsoft_xbox_w" },
+                { name: "Microsoft Xbox - X - Redump.org", link: "https://archive.org/download/microsoft_xbox_x" },
+                { name: "Microsoft Xbox - Y - Redump.org", link: "https://archive.org/download/microsoft_xbox_y" },
+                { name: "Microsoft Xbox - Z - Redump.org", link: "https://archive.org/download/microsoft_xbox_z" },
+                { name: "Microsoft Xbox - Title Updates & DLC", link: "https://archive.org/download/microsoft_xbox_dlc_titleupdates" }
             ]
         },
         nintendoWii: {
             key: "nintendoWii",
             title: "Nintendo Wii",
             items: [
-                { name: "Nintendo Wii - Redump Individual Games (Part 1)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part1" }
+                { name: "Nintendo Wii - Redump Individual Games (Part 1)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part1" },
+                { name: "Nintendo Wii - Redump Individual Games (Part 2)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part2" },
+                { name: "Nintendo Wii - Redump Individual Games (Part 3)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part3" },
+                { name: "Nintendo Wii - Redump Individual Games (Part 4)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part4" },
+                { name: "Nintendo Wii - Redump Individual Games (Part 5)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part5" },
+                { name: "Nintendo Wii - Redump Individual Games (Part 6)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part6" }
             ]
         }
     };
@@ -242,23 +314,27 @@
 
     function getVaultData() {
         let saved = localStorage.getItem('bonecrew_vault_custom_data');
-        if (!saved) {
-            return defaultVaultData;
+        if (!saved) return defaultVaultData;
+        try { 
+            let parsed = JSON.parse(saved);
+            // Automatischer Schutz: Wenn im Cache weniger als 10 Items bei Xbox360 liegen, neuladen!
+            if (!parsed.xbox360 || !parsed.xbox360.items || parsed.xbox360.items.length < 10) {
+                saveVaultData(defaultVaultData);
+                return defaultVaultData;
+            }
+            return parsed;
+        } catch(e) { 
+            return defaultVaultData; 
         }
-        try { return JSON.parse(saved); } catch(e) { return defaultVaultData; }
     }
 
     function saveVaultData(data) {
         localStorage.setItem('bonecrew_vault_custom_data', JSON.stringify(data));
     }
 
-    // Beim Start versuchen, Daten aus der Cloud (GitHub Gist) zu laden, falls eine Gist ID hinterlegt ist
     async function fetchCloudData() {
         let gistId = localStorage.getItem('bonecrew_gist_id');
         if (!gistId) {
-            if (!localStorage.getItem('bonecrew_vault_custom_data')) {
-                saveVaultData(defaultVaultData);
-            }
             initPage();
             return;
         }
@@ -273,7 +349,7 @@
                 }
             }
         } catch(e) {
-            console.log("Cloud-Sync Abruf offline oder fehlgeschlagen, nutze lokalen Cache.");
+            console.log("Cloud-Sync Abruf offline, nutze lokalen Cache.");
         }
         initPage();
     }
@@ -458,7 +534,7 @@
                     localStorage.setItem('bonecrew_gist_id', resJson.id);
                     document.getElementById('ghGistId').value = resJson.id;
                 }
-                alert('Erfolgreich in den GitHub Gist hochgeladen! Alle Besucher haben nun Zugriff auf die aktuellen Links.');
+                alert('Erfolgreich in den GitHub Gist hochgeladen!');
             } else {
                 alert('Fehler beim Hochladen. Prüfe dein Token (Benötigt "gist" Berechtigung).');
             }
@@ -468,12 +544,12 @@
     }
 
     function addNewCategory() {
-        let key = document.getElementById('newCatKey').value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
         let title = document.getElementById('newCatTitle').value.trim();
-        if (!key || !title) {
-            alert('Bitte gültigen Schlüssel und Titel eingeben.');
+        if (!title) {
+            alert('Bitte einen Konsolen-Namen eingeben.');
             return;
         }
+        let key = title.toLowerCase().replace(/[^a-z0-9]/g, '');
         let data = getVaultData();
         if (data[key]) {
             alert('Diese Kategorie existiert bereits.');
@@ -481,18 +557,22 @@
         }
         data[key] = { key: key, title: title, items: [] };
         saveVaultData(data);
-        document.getElementById('newCatKey').value = '';
         document.getElementById('newCatTitle').value = '';
         renderConsoleNav();
         switchConsole(key);
         showAdminDashboard();
-        alert('Kategorie erfolgreich erstellt!');
+        alert('Kategorie "' + title + '" erfolgreich erstellt!');
     }
 
     function addNewLinkToConsole() {
         let consoleKey = document.getElementById('linkTargetConsole').value;
         let name = document.getElementById('newLinkName').value.trim();
         let url = document.getElementById('newLinkUrl').value.trim();
+        
+        if (!consoleKey) {
+            alert('Bitte wähle eine Konsole aus oder erstelle zuerst eine Kategorie.');
+            return;
+        }
         if (!name || !url) {
             alert('Bitte Link-Bezeichnung und URL eingeben.');
             return;
@@ -506,7 +586,7 @@
         document.getElementById('newLinkUrl').value = '';
         switchConsole(currentConsoleKey);
         showAdminDashboard();
-        alert('Neuer Link erfolgreich hinzugefügt! Vergiss nicht, auf "In Cloud sichern" zu klicken.');
+        alert('Neuer Link erfolgreich hinzugefügt!');
     }
 
     function adminLogout() {
