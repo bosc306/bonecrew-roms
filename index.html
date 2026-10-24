@@ -153,7 +153,7 @@
         
         <div id="adminLoginView">
             <h2>Admin Login</h2>
-            <p style="color: #8fa3be; font-size: 0.9em; margin-bottom: 20px;">Gib das Admin-Passwort ein, um Zugriff auf das CMS und die Statistiken zu erhalten.</p>
+            <p style="color: #8fa3be; font-size: 0.9em; margin-bottom: 20px;">Gib das Admin-Passwort ein, um Zugriff auf das CMS und die GitHub-Cloud zu erhalten.</p>
             <div class="admin-form">
                 <input type="password" id="adminPasswordInput" placeholder="Passwort eingeben..." onkeydown="if(event.key === 'Enter') checkAdminLogin()">
                 <button class="admin-btn" onclick="checkAdminLogin()">Anmelden</button>
@@ -162,18 +162,20 @@
         </div>
 
         <div id="adminDashboardView" style="display: none;">
-            <h2>Admin Control Center & CMS</h2>
+            <h2>Admin Control Center & Cloud Sync</h2>
             <p style="color: #00ff66; font-size: 0.9em; margin-bottom: 15px;">✓ Erfolgreich als Administrator angemeldet</p>
             
-            <!-- Statistik Grid im Admin Bereich -->
-            <div class="stats-grid" style="margin-bottom: 20px;">
-                <div class="stat-card">
-                    <div class="label">Besucher Total</div>
-                    <div class="value" id="adminStatVisitors">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="label">Downloads Total</div>
-                    <div class="value" id="adminStatTotalDownloads">0</div>
+            <!-- GitHub Gist Cloud Sync Einstellungen -->
+            <div class="admin-section" style="border-color: #ff9900;">
+                <h3 style="color: #ff9900; margin-top: 0; font-size: 1em;">☁️ GitHub Gist Cloud-Sync</h3>
+                <p style="color: #8fa3be; font-size: 0.85em; margin-bottom: 10px;">Hinterlege dein GitHub Token & die Gist-ID, um Änderungen weltweit für alle Besucher zu synchronisieren.</p>
+                <div class="admin-form" style="margin-bottom: 0;">
+                    <input type="text" id="ghToken" placeholder="GitHub Personal Access Token (ghp_...)">
+                    <input type="text" id="ghGistId" placeholder="GitHub Gist ID (optional beim ersten Speichern)">
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn-action admin-btn" style="flex: 1;" onclick="saveGistConfig()">🔑 Anmeldedaten speichern</button>
+                        <button class="btn-action admin-btn" style="flex: 1; background: linear-gradient(135deg, #00cc66 0%, #006633 100%);" onclick="syncToCloudGist()">🚀 In Cloud sichern (Gist Upload)</button>
+                    </div>
                 </div>
             </div>
 
@@ -182,33 +184,20 @@
                 <h3 style="color: #ff9900; margin-top: 0; font-size: 1em;">➕ Neue Konsole / Kategorie erstellen</h3>
                 <div class="admin-form" style="display: flex; gap: 10px; margin-bottom: 0;">
                     <input type="text" id="newCatKey" placeholder="Schlüssel (z.B. ps2)" style="flex: 1; margin-bottom: 0;">
-                    <input type="text" id="newCatTitle" placeholder="Titel (z.B. Sony PlayStation 2)" style="flex: 2; margin-bottom: 0;">
+                    <input type="text" id="newCatTitle" placeholder="Titel (z.B. PlayStation 2)" style="flex: 2; margin-bottom: 0;">
                     <button class="admin-btn" onclick="addNewCategory()">Erstellen</button>
                 </div>
             </div>
 
             <!-- CMS: Neuen Link hinzufügen -->
             <div class="admin-section">
-                <h3 style="color: #ff9900; margin-top: 0; font-size: 1em;">🔗 Neuen Link zu Kategorie hinzufügen</h3>
+                <h3 style="color: #ff9900; margin-top: 0; font-size: 1em;">🔗 Neuen Link hinzufügen</h3>
                 <div class="admin-form" style="margin-bottom: 0;">
                     <select id="linkTargetConsole"></select>
                     <input type="text" id="newLinkName" placeholder="Link-Bezeichnung (z.B. PS2 - A - Redump.org)">
-                    <input type="text" id="newLinkUrl" placeholder="Download-URL (z.B. https://archive.org/download/...)">
+                    <input type="text" id="newLinkUrl" placeholder="Download-URL (https://archive.org/download/...)">
                     <button class="admin-btn" onclick="addNewLinkToConsole()">Link hinzufügen</button>
                 </div>
-            </div>
-
-            <h3 style="color: #8fa3be; font-size: 0.95em; text-transform: uppercase; margin-top: 25px; border-bottom: 1px solid #1a273b; padding-bottom: 8px;">Detaillierte Klick-Statistiken</h3>
-            <div style="max-height: 200px; overflow-y: auto;">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Link-Name</th>
-                            <th style="width: 80px; text-align: right;">Klicks</th>
-                        </tr>
-                    </thead>
-                    <tbody id="adminClicksTableBody"></tbody>
-                </table>
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 25px;">
@@ -228,10 +217,6 @@
                 { name: "Microsoft Xbox 360 - # - Redump.org", link: "https://archive.org/download/microsoft_xbox360_number" },
                 { name: "Microsoft Xbox 360 - A (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_a_part1" },
                 { name: "Microsoft Xbox 360 - A (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_a_part2" },
-                { name: "Microsoft Xbox 360 - B (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_b_part1" },
-                { name: "Microsoft Xbox 360 - B (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_b_part2" },
-                { name: "Microsoft Xbox 360 - C (Part 1) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_c_part1" },
-                { name: "Microsoft Xbox 360 - C (Part 2) - Redump.org", link: "https://archive.org/download/microsoft_xbox360_c_part2" },
                 { name: "Microsoft Xbox 360 - Digital (Part 1)", link: "https://archive.org/download/microsoft_xbox360_digital_part1" }
             ]
         },
@@ -240,16 +225,14 @@
             title: "Microsoft Xbox Classic",
             items: [
                 { name: "Microsoft Xbox - # - Redump.org", link: "https://archive.org/download/microsoft_xbox_number" },
-                { name: "Microsoft Xbox - A - Redump.org", link: "https://archive.org/download/microsoft_xbox_a" },
-                { name: "Microsoft Xbox - B - Redump.org", link: "https://archive.org/download/microsoft_xbox_b" }
+                { name: "Microsoft Xbox - A - Redump.org", link: "https://archive.org/download/microsoft_xbox_a" }
             ]
         },
         nintendoWii: {
             key: "nintendoWii",
             title: "Nintendo Wii",
             items: [
-                { name: "Nintendo Wii - Redump Individual Games (Part 1)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part1" },
-                { name: "Nintendo Wii - Redump Individual Games (Part 2)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part2" }
+                { name: "Nintendo Wii - Redump Individual Games (Part 1)", link: "https://archive.org/download/Wii-Redump-2024-Individual-Games-Part1" }
             ]
         }
     };
@@ -260,7 +243,6 @@
     function getVaultData() {
         let saved = localStorage.getItem('bonecrew_vault_custom_data');
         if (!saved) {
-            localStorage.setItem('bonecrew_vault_custom_data', JSON.stringify(defaultVaultData));
             return defaultVaultData;
         }
         try { return JSON.parse(saved); } catch(e) { return defaultVaultData; }
@@ -268,6 +250,32 @@
 
     function saveVaultData(data) {
         localStorage.setItem('bonecrew_vault_custom_data', JSON.stringify(data));
+    }
+
+    // Beim Start versuchen, Daten aus der Cloud (GitHub Gist) zu laden, falls eine Gist ID hinterlegt ist
+    async function fetchCloudData() {
+        let gistId = localStorage.getItem('bonecrew_gist_id');
+        if (!gistId) {
+            if (!localStorage.getItem('bonecrew_vault_custom_data')) {
+                saveVaultData(defaultVaultData);
+            }
+            initPage();
+            return;
+        }
+
+        try {
+            let response = await fetch(`https://api.github.com/gists/${gistId}`);
+            if (response.ok) {
+                let gistJson = await response.json();
+                if (gistJson.files && gistJson.files['bonecrew_vault_data.json']) {
+                    let cloudData = JSON.parse(gistJson.files['bonecrew_vault_data.json'].content);
+                    saveVaultData(cloudData);
+                }
+            }
+        } catch(e) {
+            console.log("Cloud-Sync Abruf offline oder fehlgeschlagen, nutze lokalen Cache.");
+        }
+        initPage();
     }
 
     function initPage() {
@@ -390,12 +398,9 @@
         document.getElementById('adminLoginView').style.display = 'none';
         document.getElementById('adminDashboardView').style.display = 'block';
 
-        document.getElementById('adminStatVisitors').innerText = localStorage.getItem('bonecrew_visitors') || '1';
-        let clicks = JSON.parse(localStorage.getItem('bonecrew_clicks')) || {};
-        let total = Object.values(clicks).reduce((a, b) => a + b, 0);
-        document.getElementById('adminStatTotalDownloads').innerText = total;
+        document.getElementById('ghToken').value = localStorage.getItem('bonecrew_gh_token') || '';
+        document.getElementById('ghGistId').value = localStorage.getItem('bonecrew_gist_id') || '';
 
-        // Select-Box für Konsolen im CMS befüllen
         let select = document.getElementById('linkTargetConsole');
         select.innerHTML = '';
         let data = getVaultData();
@@ -405,13 +410,60 @@
             opt.innerText = data[k].title;
             select.appendChild(opt);
         }
+    }
 
-        let tbody = document.getElementById('adminClicksTableBody');
-        tbody.innerHTML = '';
-        for (let name in clicks) {
-            let tr = document.createElement('tr');
-            tr.innerHTML = `<td>${name}</td><td style="text-align: right; font-weight: bold; color: #ff9900;">${clicks[name]}</td>`;
-            tbody.appendChild(tr);
+    function saveGistConfig() {
+        let token = document.getElementById('ghToken').value.trim();
+        let gistId = document.getElementById('ghGistId').value.trim();
+        localStorage.setItem('bonecrew_gh_token', token);
+        if (gistId) localStorage.setItem('bonecrew_gist_id', gistId);
+        alert('GitHub Zugangsdaten gespeichert!');
+    }
+
+    async function syncToCloudGist() {
+        let token = document.getElementById('ghToken').value.trim();
+        let gistId = document.getElementById('ghGistId').value.trim();
+        if (!token) {
+            alert('Bitte zuerst ein GitHub Personal Access Token eingeben!');
+            return;
+        }
+
+        let currentData = getVaultData();
+        let payload = {
+            description: "BoneCrew Vault Cloud Data Backup",
+            public: false,
+            files: {
+                "bonecrew_vault_data.json": {
+                    content: JSON.stringify(currentData, null, 2)
+                }
+            }
+        };
+
+        try {
+            let url = gistId ? `https://api.github.com/gists/${gistId}` : `https://api.github.com/gists`;
+            let method = gistId ? "PATCH" : "POST";
+
+            let res = await fetch(url, {
+                method: method,
+                headers: {
+                    "Authorization": `token ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                let resJson = await res.json();
+                if (!gistId) {
+                    localStorage.setItem('bonecrew_gist_id', resJson.id);
+                    document.getElementById('ghGistId').value = resJson.id;
+                }
+                alert('Erfolgreich in den GitHub Gist hochgeladen! Alle Besucher haben nun Zugriff auf die aktuellen Links.');
+            } else {
+                alert('Fehler beim Hochladen. Prüfe dein Token (Benötigt "gist" Berechtigung).');
+            }
+        } catch(e) {
+            alert('Netzwerkfehler beim Cloud-Sync: ' + e.message);
         }
     }
 
@@ -432,6 +484,7 @@
         document.getElementById('newCatKey').value = '';
         document.getElementById('newCatTitle').value = '';
         renderConsoleNav();
+        switchConsole(key);
         showAdminDashboard();
         alert('Kategorie erfolgreich erstellt!');
     }
@@ -453,7 +506,7 @@
         document.getElementById('newLinkUrl').value = '';
         switchConsole(currentConsoleKey);
         showAdminDashboard();
-        alert('Neuer Link erfolgreich hinzugefügt!');
+        alert('Neuer Link erfolgreich hinzugefügt! Vergiss nicht, auf "In Cloud sichern" zu klicken.');
     }
 
     function adminLogout() {
@@ -466,13 +519,13 @@
             localStorage.removeItem('bonecrew_visitors');
             localStorage.removeItem('bonecrew_clicks');
             localStorage.removeItem('bonecrew_console_clicks');
-            initPage();
+            fetchCloudData();
             showAdminDashboard();
             alert("Statistiken zurückgesetzt.");
         }
     }
 
-    document.addEventListener('DOMContentLoaded', initPage);
+    document.addEventListener('DOMContentLoaded', fetchCloudData);
 </script>
 
 </body>
